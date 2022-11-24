@@ -15,7 +15,7 @@ export const onGet: RequestHandler<FileObject[]> = async () => {
     urlEndpoint: `https://ik.imagekit.io/${imageKitId}/`
   });
 
-  return imageKit.listFiles({limit: 10})
+  return imageKit.listFiles({limit: 100})
 }
 
 export default component$(() => {
