@@ -1,7 +1,8 @@
-import { Resource, component$ } from '@builder.io/qwik';
+import { Resource, component$, useStylesScoped$ } from '@builder.io/qwik';
 import { RequestHandler, useEndpoint } from '@builder.io/qwik-city';
 import ImageKit from 'imagekit';
 import { FileObject } from 'imagekit/dist/libs/interfaces';
+import styles from './photos.css?inline';
 
 export const onGet: RequestHandler<FileObject[]> = async () => {
   const imageKitId = import.meta.env.VITE_IMAGE_KIT_ID;
@@ -19,15 +20,17 @@ export const onGet: RequestHandler<FileObject[]> = async () => {
 
 export default component$(() => {
   const data = useEndpoint<FileObject[]>();
+  useStylesScoped$(styles);
+
   return (
     <Resource
       value={data}
       onPending={() => <div>Loading...</div>}
       onRejected={() => <div>Error</div>}
       onResolved={(files) => (
-        <div>
+        <div id="photos">
           {files.map((f: FileObject) => (
-            <img src={f.url} alt={f.name} />
+            <img src={`${f.url}?tr=w-300`} alt={f.name} />
           ))}
         </div>
       )}
