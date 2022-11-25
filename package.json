@@ -37,6 +37,9 @@
     "vite-tsconfig-paths": "3.5.0"
   },
   "dependencies": {
-    "imagekit": "^4.1.1"
+    "@trpc/client": "^10.2.0",
+    "@trpc/server": "^10.2.0",
+    "imagekit": "^4.1.1",
+    "zod": "^3.19.1"
   }
 }
