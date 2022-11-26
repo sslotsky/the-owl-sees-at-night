@@ -18,6 +18,7 @@ export default component$(() => {
       <head>
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
+        <link href="https://fonts.googleapis.com/css2?family=Hind+Guntur&family=Hind+Siliguri&family=Mako&display=swap" rel="stylesheet" />
         <RouterHead />
       </head>
       <body lang="en">

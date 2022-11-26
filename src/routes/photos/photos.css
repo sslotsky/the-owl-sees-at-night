@@ -1,19 +1,21 @@
 #photos {
   line-height: 0;
   column-count: 5;
-  column-gap: 1px;
+  column-gap: 5px;
 }
 
 #photos img {
   width: 100%;
   height: auto;
   transition: all .5s ease-in-out;
-  margin: 1px;
+  margin-top: 5px;
 }
 
 #photos img:hover {
   transform: scale(1.5);
   border-radius: 2px;
+  position: relative;
+  z-index: 2;
 }
 
 @media (max-width: 1200px) {

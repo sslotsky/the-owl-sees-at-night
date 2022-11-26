@@ -1,34 +1,22 @@
 header {
-  display: flex;
-  background: white;
-  border-bottom: 10px solid var(--qwik-dark-purple);
+  padding: 20px;
 }
 
-header .logo a {
-  display: inline-block;
-  padding: 10px 10px 7px 20px;
+h1 {
+  text-align: center;
+  line-height: 1.25;
 }
 
-header ul {
-  margin: 0;
-  padding: 3px 10px 0 0;
+h1 strong {
+  font-size: 40%;
+  display: block;
+  text-transform: uppercase;
+}
+
+ul {
   list-style: none;
-  flex: 1;
-  text-align: right;
 }
 
-header li {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-}
-
-header li a {
-  display: inline-block;
-  padding: 15px 10px;
+ul a {
   text-decoration: none;
-}
-
-header li a:hover {
-  text-decoration: underline;
 }
