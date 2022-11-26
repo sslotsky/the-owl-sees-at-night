@@ -21,7 +21,7 @@ export default component$(() => {
       onResolved={(files) => (
         <div id="photos">
           {files.map((f: FileObject) => (
-            <img src={`${f.url}?tr=w-300`} alt={f.name} />
+            <img src={f.url} alt={f.name} />
           ))}
         </div>
       )}

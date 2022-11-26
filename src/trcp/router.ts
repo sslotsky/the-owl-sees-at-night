@@ -12,13 +12,24 @@ export const appRouter = t.router({
       const imageKit = new ImageKit({
         publicKey,
         privateKey,
-        urlEndpoint: `https://ik.imagekit.io/${imageKitId}/`
+        urlEndpoint: `https://ik.imagekit.io/${imageKitId}/`,
       });
 
-      return imageKit.listFiles({
+      const files = await imageKit.listFiles({
         limit: 100,
         sort: 'DESC_UPDATED'
       });
+
+      return files.map(f => ({
+        ...f,
+        url: imageKit.url({
+          path: f.filePath,
+          signed: true,
+          transformation: [{
+            width: 300
+          }]
+        })
+      }))
     })
 });
 
