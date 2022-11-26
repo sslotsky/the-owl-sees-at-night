@@ -11,10 +11,12 @@
   --qwik-light-blue: #18b6f6;
   --qwik-light-purple: #ac7ff4;
   --qwik-dark-purple: #713fc2;
+  --classic-olive: #75773C;
+  --turmeric: #F0CA28;
 }
 
 body {
-  background-color: #fafafa;
+  background-color: var(--classic-olive);
   font-family: 'Hind Siliguri', sans-serif;
   padding: 20px 20px 40px 20px;
 }
@@ -40,7 +42,6 @@ h2 {
 
 section {
   padding: 20px;
-  border-bottom: 10px solid var(--qwik-dark-blue);
 }
 
 ul {

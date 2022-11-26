@@ -13,7 +13,7 @@
 
 #photos img:hover {
   transform: scale(1.25);
-  transform-origin: top left;
+  transform-origin: top right;
   border-radius: 2px;
   position: relative;
   z-index: 2;
