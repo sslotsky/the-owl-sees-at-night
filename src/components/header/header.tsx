@@ -7,7 +7,7 @@ export default component$(() => {
   return (
     <header>
       <div class="logo">
-        <h1>Bee Wednesday <strong>photography</strong></h1>
+        <h1>Bee Wednesday <strong>photography for humans</strong></h1>
       </div>
       <ul>
         <li>

@@ -3,18 +3,18 @@ header {
 }
 
 h1 {
-  text-align: center;
   line-height: 1.25;
 }
 
 h1 strong {
-  font-size: 40%;
+  font-size: 50%;
   display: block;
   text-transform: uppercase;
 }
 
 ul {
   list-style: none;
+  padding: 0;
 }
 
 ul a {
