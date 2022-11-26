@@ -11,7 +11,7 @@ export default component$(() => {
       </div>
       <ul>
         <li>
-          <a href="/">
+          <a href="/photos">
             Latest Shots
           </a>
         </li>
