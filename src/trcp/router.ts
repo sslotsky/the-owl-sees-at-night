@@ -26,7 +26,7 @@ export const appRouter = t.router({
           path: f.filePath,
           signed: true,
           transformation: [{
-            width: 300
+            named: 'masonry'
           }]
         })
       }))
