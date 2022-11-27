@@ -12,7 +12,7 @@ export default component$(() => {
       </div>
       <ul class="left-nav">
         <li>
-          <a href="/photos">
+          <a href="/">
             Latest Shots
           </a>
         </li>
@@ -22,7 +22,7 @@ export default component$(() => {
           {open.value && (
             <ul>
               <li>
-                <a href="/photos">
+                <a href="/">
                   Latest Shots
                 </a>
               </li>
