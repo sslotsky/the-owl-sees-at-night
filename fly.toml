@@ -7,6 +7,10 @@ processes = []
 
 [env]
 
+[build.args]
+  NPM_CONFIG_PRODUCTION=false
+  YARN_PRDUCTION=false
+
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
