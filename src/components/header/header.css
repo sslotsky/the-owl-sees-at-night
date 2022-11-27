@@ -2,6 +2,11 @@ header {
   padding: 20px;
 }
 
+.top-nav {
+  display: none;
+  position: relative;
+}
+
 h1 {
   line-height: 1.25;
 }
@@ -29,4 +34,45 @@ ul a:visited {
 
 ul a:hover {
   color: var(--turmeric);
+}
+
+@media (max-width: 800px) {
+  header {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+  }
+
+  .left-nav {
+    display: none;
+  }
+
+  .top-nav {
+    display: inline;
+    text-align: right;
+  }
+}
+
+button.menu {
+  background-color: transparent;
+  border: none;
+  color: var(--turmeric);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.top-nav ul {
+  position: absolute;
+  margin: 0;
+  right: 0;
+  background-color: lavender;
+  padding: 0.5rem 0;
+  z-index: 3;
+}
+
+.top-nav ul li {
+  padding: 0 1rem;
+}
+
+.top-nav ul li a {
+  font-size: 0.75rem;
 }

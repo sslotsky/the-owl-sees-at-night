@@ -125,3 +125,9 @@ a.mindblow:hover {
   margin-bottom: 4px;
   transform: translateY(4px);
 }
+
+@media (max-width: 800px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}
