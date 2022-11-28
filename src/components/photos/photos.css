@@ -19,6 +19,10 @@
   z-index: 2;
 }
 
+#photos[data-url] img {
+  display: none;
+}
+
 @media (max-width: 1200px) {
   #photos {
     column-count: 4;

@@ -18,7 +18,7 @@ export default component$(() => {
       onPending={() => <div>Loading...</div>}
       onRejected={() => <div>Error</div>}
       onResolved={(files) => (
-        <Photos files={files} />
+        <Photos files={files} indexParam="viewing" />
       )}
     />
   )
