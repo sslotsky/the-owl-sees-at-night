@@ -5,6 +5,11 @@ export default component$(() => {
   useStylesScoped$(styles);
   const open = useSignal(false);
 
+  const classes = ["top-nav"];
+  if (open.value) {
+    classes.push("open")
+  }
+
   return (
     <header>
       <div class="logo">
@@ -17,17 +22,15 @@ export default component$(() => {
           </a>
         </li>
       </ul>
-      <div class="top-nav">
+      <div class={classes.join(" ")}>
         <button onClick$={() => open.value = !open.value} class="menu">&#8801;</button>
-          {open.value && (
-            <ul>
-              <li>
-                <a href="/">
-                  Latest Shots
-                </a>
-              </li>
-            </ul>
-          )}
+        <ul>
+          <li>
+            <a href="/">
+              Latest Shots
+            </a>
+          </li>
+        </ul>
       </div>
     </header>
   );

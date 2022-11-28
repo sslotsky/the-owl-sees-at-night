@@ -58,17 +58,30 @@ button.menu {
   color: var(--turmeric);
   font-size: 2rem;
   cursor: pointer;
+  transition: all .25s linear;
+}
+
+.top-nav.open button.menu {
+  transform: rotate(90deg);
 }
 
 .top-nav ul {
   position: absolute;
   margin: 0;
   right: 0;
+  height: 0;
+  transform: scaleY(0);
+  transition: all 0.25s ease-out;
   padding: 0.5rem 0;
   z-index: 3;
   background-color: white;
   filter: invert(1);
   border-radius: 3px;
+}
+
+.top-nav.open ul {
+  transform: scaleY(1);
+  height: auto;
 }
 
 .top-nav ul li {
