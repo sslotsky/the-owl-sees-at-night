@@ -50,8 +50,7 @@ div.full a:hover {
   opacity: 0.5;
 }
 
-.next:hover::after {
-  content: ">";
+div.full a:hover::after {
   font-size: 5rem;
   display: flex;
   align-items: center;
@@ -59,13 +58,12 @@ div.full a:hover {
   height: 100%;
 }
 
+.next:hover::after {
+  content: ">";
+}
+
 .prev:hover::after {
   content: "<";
-  font-size: 5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
 }
 
 @media (max-width: 1200px) {
