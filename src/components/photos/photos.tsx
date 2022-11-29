@@ -1,10 +1,10 @@
 import {component$, useStylesScoped$, useSignal } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
-import { FileObject } from 'imagekit/dist/libs/interfaces';
+import { MasonryPhoto } from '~/trcp/router';
 import styles from './photos.css?inline';
 
 interface Props {
-  files: FileObject[];
+  files: MasonryPhoto[];
   indexParam?: string;
 }
 
@@ -17,7 +17,7 @@ export default component$((props: Props) => {
 
   const imageUrl = useSignal(
     isViewing
-      ? files[Math.abs(viewing % files.length)].url
+      ? files[Math.abs(viewing % files.length)].fullSizeUrl
       : undefined
     );
 
@@ -28,15 +28,15 @@ export default component$((props: Props) => {
   return (
     <div>
       {isViewing && (
-        <>
+        <div class="full">
           <img src={imageUrl.value} />
-          <a href={prevUrl.toString()}>Prev</a>
-          <a href={nextUrl.toString()}>Next</a>
-        </>
+          <a class="prev" href={prevUrl.toString()}></a>
+          <a class="next" href={nextUrl.toString()}></a>
+        </div>
       )}
       <div id="photos" data-url={imageUrl.value}>
-        {props.files.map((f: FileObject) => (
-          <img src={f.url} alt={f.name} />
+        {props.files.map((f: MasonryPhoto) => (
+          <img src={f.masonryUrl} alt={f.name} />
         ))}
       </div>
     </div>

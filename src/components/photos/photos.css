@@ -23,6 +23,51 @@
   display: none;
 }
 
+div.full {
+  position: relative;
+}
+
+div.full img {
+  max-width: 100%;
+}
+
+div.full .prev {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  left: 0;
+}
+
+div.full .next {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  left: 50%;
+}
+
+div.full a:hover {
+  background-color: black;
+  opacity: 0.5;
+}
+
+.next:hover::after {
+  content: ">";
+  font-size: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.prev:hover::after {
+  content: "<";
+  font-size: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
 @media (max-width: 1200px) {
   #photos {
     column-count: 4;
