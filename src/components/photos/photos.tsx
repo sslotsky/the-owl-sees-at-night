@@ -20,6 +20,12 @@ export default component$((props: Props) => {
   prevUrl.searchParams.set(indexParam, `${viewing - 1}`);
   nextUrl.searchParams.set(indexParam, `${viewing + 1}`);
 
+  const getUrl = (n: number) => {
+    const url = new URL(loc.href);
+    url.searchParams.set(indexParam, n.toString());
+    return url.toString();
+  }
+
   return (
     <div>
       {isViewing && (
@@ -30,8 +36,10 @@ export default component$((props: Props) => {
         </div>
       )}
       <div id="photos" data-viewing={isViewing}>
-        {props.files.map((f: MasonryPhoto) => (
-          <img src={f.masonryUrl} alt={f.name} />
+        {props.files.map((f: MasonryPhoto, index: number) => (
+          <a href={getUrl(index)}>
+            <img src={f.masonryUrl} alt={f.name} />
+          </a>
         ))}
       </div>
     </div>
