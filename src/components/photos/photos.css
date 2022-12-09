@@ -25,6 +25,7 @@
 
 div.full {
   position: relative;
+  display: flex;
 }
 
 div.full img {
