@@ -1,4 +1,4 @@
-import {component$, useStylesScoped$, useSignal } from '@builder.io/qwik';
+import {component$, useStylesScoped$ } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
 import { MasonryPhoto } from '~/trcp/router';
 import Image from '~/components/image/image';
