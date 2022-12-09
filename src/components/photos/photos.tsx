@@ -1,6 +1,7 @@
 import {component$, useStylesScoped$, useSignal } from '@builder.io/qwik';
 import { useLocation } from '@builder.io/qwik-city';
 import { MasonryPhoto } from '~/trcp/router';
+import Image from '~/components/image/image';
 import styles from './photos.css?inline';
 
 interface Props {
@@ -15,12 +16,6 @@ export default component$((props: Props) => {
   const viewing = parseInt(loc.query[indexParam], 10);
   const isViewing = !isNaN(viewing);
 
-  const imageUrl = useSignal(
-    isViewing
-      ? files[Math.abs(viewing % files.length)].fullSizeUrl
-      : undefined
-    );
-
   const [prevUrl, nextUrl] = [new URL(loc.href), new URL(loc.href)];
   prevUrl.searchParams.set(indexParam, `${viewing - 1}`);
   nextUrl.searchParams.set(indexParam, `${viewing + 1}`);
@@ -29,12 +24,12 @@ export default component$((props: Props) => {
     <div>
       {isViewing && (
         <div class="full">
-          <img src={imageUrl.value} />
+          <Image photo={files[Math.abs(viewing % files.length)]} />
           <a class="prev" href={prevUrl.toString()}></a>
           <a class="next" href={nextUrl.toString()}></a>
         </div>
       )}
-      <div id="photos" data-url={imageUrl.value}>
+      <div id="photos" data-viewing={isViewing}>
         {props.files.map((f: MasonryPhoto) => (
           <img src={f.masonryUrl} alt={f.name} />
         ))}

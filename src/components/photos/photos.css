@@ -19,7 +19,7 @@
   z-index: 2;
 }
 
-#photos[data-url] img {
+#photos[data-viewing] img {
   display: none;
 }
 

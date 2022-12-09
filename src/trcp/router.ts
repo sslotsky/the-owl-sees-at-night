@@ -39,6 +39,9 @@ export const appRouter = t.router({
         fullSizeUrl: imageKit.url({
           path: f.filePath,
           signed: true,
+          transformation: [{
+            named: 'full_size'
+          }]
         }),
         fullSizeBlurUrl: imageKit.url({
           path: f.filePath,
