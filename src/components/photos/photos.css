@@ -51,20 +51,16 @@ div.full a:hover {
   opacity: 0.5;
 }
 
-div.full a:hover::after {
+.prev, .next {
+  font-size: 0;
+}
+
+div.full a:hover {
   font-size: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-}
-
-.next:hover::after {
-  content: ">";
-}
-
-.prev:hover::after {
-  content: "<";
 }
 
 @media (max-width: 1200px) {

@@ -31,8 +31,8 @@ export default component$((props: Props) => {
       {isViewing && (
         <div class="full">
           <Image photo={files[Math.abs(viewing % files.length)]} />
-          <a class="prev" href={prevUrl.toString()}></a>
-          <a class="next" href={nextUrl.toString()}></a>
+          <a class="prev" href={prevUrl.toString()}>&lsaquo;</a>
+          <a class="next" href={nextUrl.toString()}>&rsaquo;</a>
         </div>
       )}
       <div id="photos" data-viewing={isViewing}>
