@@ -31,6 +31,7 @@ main {
   grid-template-columns: 300px 1fr;
   min-height: 100vh;
   max-width: 1340px;
+  align-content: flex-start;
 }
 
 h1,
