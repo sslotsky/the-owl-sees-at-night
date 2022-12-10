@@ -16,9 +16,10 @@ export default component$((props: Props) => {
   const viewing = parseInt(loc.query[indexParam], 10);
   const isViewing = !isNaN(viewing);
 
-  const [prevUrl, nextUrl] = [new URL(loc.href), new URL(loc.href)];
+  const [prevUrl, nextUrl, gridUrl] = [new URL(loc.href), new URL(loc.href), new URL(loc.href)];
   prevUrl.searchParams.set(indexParam, `${viewing - 1}`);
   nextUrl.searchParams.set(indexParam, `${viewing + 1}`);
+  gridUrl.searchParams.delete(indexParam);
 
   const getUrl = (n: number) => {
     const url = new URL(loc.href);
@@ -32,6 +33,7 @@ export default component$((props: Props) => {
         <div class="full">
           <Image photo={files[Math.abs(viewing % files.length)]} />
           <a class="prev" href={prevUrl.toString()}>&lsaquo;</a>
+          <a class="close" href={gridUrl.toString()}>x</a>
           <a class="next" href={nextUrl.toString()}>&rsaquo;</a>
         </div>
       )}

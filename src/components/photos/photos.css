@@ -32,28 +32,30 @@ div.full img {
   max-width: 100%;
 }
 
-div.full .prev {
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  left: 0;
-}
-
-div.full .next {
-  position: absolute;
-  width: 50%;
-  height: 100%;
-  left: 50%;
-}
-
 div.full a:hover {
   background-color: black;
   opacity: 0.5;
 }
 
-.prev, .next {
+.prev, .next, .close {
+  position: absolute;
+  width: calc(100% / 3);
+  height: 100%;
   font-size: 0;
 }
+
+.prev {
+  left: 0;
+}
+
+.close {
+  left: calc(100% / 3);
+}
+
+.next {
+  left: calc(200% / 3);
+}
+
 
 div.full a:hover {
   font-size: 5rem;
