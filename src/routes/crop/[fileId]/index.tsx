@@ -1,8 +1,11 @@
 import { component$, Resource, useClientEffect$, useSignal, useStore, useStylesScoped$ } from '@builder.io/qwik';
 import { RequestHandler, useEndpoint } from '@builder.io/qwik-city';
 import { FileObject } from 'imagekit/dist/libs/interfaces';
+import { woodPrints } from '~/biz/prints';
 import { appRouter } from '~/trcp/router';
 import styles from './crop.css?inline';
+// import { woodPrints } from '~/biz/prints';
+
 
 export const onGet: RequestHandler<FileObject> = async ({ params }) => {
   const caller = appRouter.createCaller({});
@@ -23,8 +26,12 @@ export default component$(() => {
     moving: false
   });
 
-  useClientEffect$(() => {
+  useClientEffect$((ctx) => {
+    ctx.track(() => state.x)
+    ctx.track(() => state.y)
+
     if (image.value) {
+      console.log('happening')
       const img = image.value;
       const maxX = Math.floor(img.clientWidth / state.x);
       const maxY = Math.floor(img.clientHeight / state.y);
@@ -49,7 +56,7 @@ export default component$(() => {
       onPending={() => <div>Loading...</div>}
       onRejected={() => <div>Error</div>}
       onResolved={(file: FileObject) => (
-        <>
+        <div class="print-picker">
           <div class="crop-zone">
             <img ref={image} src={file.url} />
             <div class="overlay">
@@ -87,8 +94,30 @@ export default component$(() => {
               />
             </div>
           </div>
-          <p>{JSON.stringify(file, null, 2)}</p>
-        </>
+          <div class="print-options">
+            <h2>Choose your print</h2>
+            <div>
+              {woodPrints.map((print) => {
+                return (
+                  <div class="print-option" style={`height: ${print.height * 5}px; width: ${print.width * 5}px;`} onClick$={() => {
+                    state.x = print.width;
+                    state.y = print.height;
+                  }} />
+                )
+              })}
+            </div>
+            <div>
+              {woodPrints.map((print) => {
+                return (
+                  <div class="print-option" style={`height: ${print.width * 5}px; width: ${print.height * 5}px;`} onClick$={() => {
+                    state.y = print.width;
+                    state.x = print.height;
+                  }} />
+                )
+              })}
+            </div>
+          </div>
+        </div>
       )}
     />
   );

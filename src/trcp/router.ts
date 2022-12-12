@@ -2,7 +2,6 @@ import { initTRPC } from '@trpc/server';
 import ImageKit from 'imagekit';
 import { FileObject } from 'imagekit/dist/libs/interfaces';
 import { z } from 'zod';
-import image from '~/components/image/image';
 
 const imageKitId = import.meta.env.VITE_IMAGE_KIT_ID;
 const publicKey = import.meta.env.VITE_IMAGE_KIT_PUBLIC_KEY;

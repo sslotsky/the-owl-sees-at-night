@@ -1,3 +1,7 @@
+.print-picker {
+  display: flex;
+}
+
 .crop-zone {
   position: relative;
   display: flex;
@@ -19,4 +23,15 @@ img {
 
 .overlay img {
   cursor: move;
+}
+
+.print-options {
+  margin: 1rem;
+}
+
+.print-option {
+  display: inline-block;
+  margin-right: 1rem;
+  border: 1px solid black;
+  cursor: pointer;
 }
