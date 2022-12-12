@@ -19,6 +19,6 @@ export default component$((props: Props) => {
   })
 
   return (
-    <img src={url.value} alt="hello" />
+    <img src={url.value} alt="hello" data-id={photo.fileId} />
   )
 });

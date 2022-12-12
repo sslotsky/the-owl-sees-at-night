@@ -1,6 +1,12 @@
 import { initTRPC } from '@trpc/server';
 import ImageKit from 'imagekit';
 import { FileObject } from 'imagekit/dist/libs/interfaces';
+import { z } from 'zod';
+import image from '~/components/image/image';
+
+const imageKitId = import.meta.env.VITE_IMAGE_KIT_ID;
+const publicKey = import.meta.env.VITE_IMAGE_KIT_PUBLIC_KEY;
+const privateKey = import.meta.env.VITE_IMAGE_KIT_PRIVATE_KEY;
 
 export interface MasonryPhoto extends FileObject {
   masonryUrl: string;
@@ -10,12 +16,21 @@ export interface MasonryPhoto extends FileObject {
 
 const t = initTRPC.create();
 export const appRouter = t.router({
+  getPhoto: t.procedure
+    .input(
+      z.string()
+    )
+    .query<FileObject>(async ({ input: fileId }) => {
+      const imageKit = new ImageKit({
+        publicKey,
+        privateKey,
+        urlEndpoint: `https://ik.imagekit.io/${imageKitId}/`,
+      });
+
+      return imageKit.getFileDetails(fileId);
+    }),
   searchPhotos: t.procedure
     .query<MasonryPhoto[]>(async () => {
-      const imageKitId = import.meta.env.VITE_IMAGE_KIT_ID;
-      const publicKey = import.meta.env.VITE_IMAGE_KIT_PUBLIC_KEY;
-      const privateKey = import.meta.env.VITE_IMAGE_KIT_PRIVATE_KEY;
-
       const imageKit = new ImageKit({
         publicKey,
         privateKey,
