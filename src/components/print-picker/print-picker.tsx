@@ -1,0 +1,135 @@
+import { component$, useClientEffect$, useSignal, useStore, useStylesScoped$ } from '@builder.io/qwik';
+import { FileObject } from 'imagekit/dist/libs/interfaces';
+import { woodPrints } from '~/biz/prints';
+import styles from './print-picker.css?inline';
+
+interface Props {
+  file: FileObject;
+}
+
+export default component$((props: Props) => {
+  useStylesScoped$(styles);
+  const { file } = props;
+  const image = useSignal<Element>();
+  const window = useSignal<Element>();
+  const canvas = useSignal<Element>();
+  const state = useStore({
+    left: 0,
+    top: 0,
+    width: 0,
+    height: 0,
+    x: 8.5,
+    y: 11,
+    moving: false
+  });
+
+  useClientEffect$((ctx) => {
+    ctx.track(() => state.x)
+    ctx.track(() => state.y)
+
+    if (image.value) {
+      const img = image.value;
+      const maxX = Math.floor(img.clientWidth / state.x);
+      const maxY = Math.floor(img.clientHeight / state.y);
+      const scale = Math.min(maxX, maxY);
+      state.width = state.x * scale;
+      state.height = state.y * scale;
+    }
+  })
+
+  useClientEffect$((ctx) => {
+    ctx.track(() => state.x)
+    ctx.track(() => state.y)
+    ctx.track(() => state.top)
+    ctx.track(() => state.left)
+
+    if (window.value && canvas.value && image.value) {
+      const el = canvas.value as HTMLCanvasElement;
+      const context = el.getContext('2d');
+      const scale = file.width / image.value.clientWidth;
+      context?.clearRect(0, 0, el.width, el.height);
+      context?.drawImage(
+        window.value as HTMLImageElement,
+        state.left * scale, state.top * scale,
+        state.width * scale, state.height * scale,
+        0, 0,
+        el.width, el.height
+      );
+    }
+  })
+
+  const [offsetLeft, offsetTop, offsetRight, offsetBottom] = [
+    state.left,
+    state.top,
+    (image.value?.clientWidth || 0) - (state.left + state.width),
+    (image.value?.clientHeight || 0) - (state.top + state.height)
+  ]
+
+  const clipPath = `clip-path: inset(${offsetTop}px ${offsetRight}px ${offsetBottom}px ${offsetLeft}px)`;
+
+  return (
+    <div class="print-picker">
+      <div class="left-column">
+        <div class="crop-zone">
+          <img ref={image} src={file.url} />
+          <div class="overlay">
+            <img
+              ref={window}
+              preventdefault:pointerdown
+              style={clipPath}
+              src={file.url}
+              onPointerDown$={() => {
+                state.moving = true;
+              }}
+              onPointerUp$={() => {
+                state.moving = false;
+              }}
+              onPointerOut$={() => {
+                state.moving = false;
+              }}
+              onPointerMove$={(e) => {
+                if (state.moving) {
+                  state.left = Math.max(
+                    0,
+                    Math.min(
+                      state.left + e.movementX,
+                      (image.value?.clientWidth || 0) - state.width
+                    )
+                  )
+                  state.top = Math.max(
+                    0,
+                    Math.min(
+                      state.top + e.movementY,
+                      (image.value?.clientHeight || 0) - state.height
+                    )
+                  )
+                }
+              }}
+            />
+          </div>
+        </div>
+      </div>
+      <div class="print-options">
+        <div>
+          <h2>Choose your print</h2>
+          <div>
+            {woodPrints.map((print) => {
+              return (
+                <div class="print-option" style={`height: ${print.height * 5}px; width: ${print.width * 5}px;`} onClick$={() => {
+                  state.x = print.width;
+                  state.y = print.height;
+                  state.left = 0;
+                  state.top = 0;
+                }} />
+              )
+            })}
+          </div>
+        </div>
+        <div>
+          <h2>Print Preview</h2>
+          <canvas height={state.y * 20} width={state.x * 20} ref={canvas} class="print-preview"></canvas>
+        </div>
+      </div>
+    </div>
+  );
+});
