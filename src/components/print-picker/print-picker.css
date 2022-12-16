@@ -39,6 +39,10 @@ img {
   cursor: pointer;
 }
 
-.print-preview {
+.print-preview canvas {
   border: 1px solid black;
+}
+
+.rotate {
+  margin-bottom: 1rem;
 }

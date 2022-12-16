@@ -127,7 +127,18 @@ export default component$((props: Props) => {
         </div>
         <div>
           <h2>Print Preview</h2>
-          <canvas style={`height: ${state.y * 20}px; width: ${state.x * 20}px;`} height={state.y * 40} width={state.x * 40} ref={canvas} class="print-preview"></canvas>
+          <div class="print-preview">
+            <div>
+              <button onClick$={() => {
+                const oldX = state.x;
+                state.x = state.y;
+                state.y = oldX;
+                state.left = 0;
+                state.top = 0;
+              }} class="rotate">🔄 Rotate</button>
+            </div>
+            <canvas style={`height: ${state.y * 20}px; width: ${state.x * 20}px;`} height={state.y * 40} width={state.x * 40} ref={canvas}></canvas>
+          </div>
         </div>
       </div>
     </div>
