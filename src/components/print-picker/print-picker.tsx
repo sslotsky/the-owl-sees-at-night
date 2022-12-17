@@ -141,8 +141,6 @@ export default component$((props: Props) => {
                 <div class="print-option" style={`height: ${print.height * 5}px; width: ${print.width * 5}px;`} onClick$={() => {
                   state.x = print.width;
                   state.y = print.height;
-                  state.left = (image.value!.clientWidth - state.width) / 2; 
-                  state.top = (image.value!.clientHeight - state.height) / 2;
                 }} />
               )
             })}
