@@ -18,10 +18,11 @@ export default component$((props: Props) => {
     top: 0,
     width: 0,
     height: 0,
-    x: 8.5,
-    y: 11,
+    x: 8,
+    y: 10,
     moving: false,
-    zoomFactor: 1
+    zoomFactor: 1,
+    initialized: false
   });
 
   useClientEffect$((ctx) => {
@@ -37,12 +38,18 @@ export default component$((props: Props) => {
       state.width = state.x * scale / state.zoomFactor;
       state.height = state.y * scale / state.zoomFactor;
 
-      if ((state.top + state.height) > img.clientHeight) {
-        state.top -= state.top + state.height - img.clientHeight;
-      } 
+      if (state.initialized) {
+        if ((state.top + state.height) > img.clientHeight) {
+          state.top -= state.top + state.height - img.clientHeight;
+        } 
 
-      if ((state.left + state.width) > img.clientWidth) {
-        state.left -= state.left + state.width - img.clientWidth;
+        if ((state.left + state.width) > img.clientWidth) {
+          state.left -= state.left + state.width - img.clientWidth;
+        }
+      } else {
+        state.initialized = true;
+        state.left = (image.value.clientWidth - state.width) / 2; 
+        state.top = (image.value.clientHeight - state.height) / 2;
       }
     }
   })
@@ -134,8 +141,8 @@ export default component$((props: Props) => {
                 <div class="print-option" style={`height: ${print.height * 5}px; width: ${print.width * 5}px;`} onClick$={() => {
                   state.x = print.width;
                   state.y = print.height;
-                  state.left = 0;
-                  state.top = 0;
+                  state.left = (image.value!.clientWidth - state.width) / 2; 
+                  state.top = (image.value!.clientHeight - state.height) / 2;
                 }} />
               )
             })}
@@ -149,8 +156,6 @@ export default component$((props: Props) => {
                 const oldX = state.x;
                 state.x = state.y;
                 state.y = oldX;
-                state.left = 0;
-                state.top = 0;
               }} class="rotate">🔄 Rotate</button>
               <label>
                 Zoom in
