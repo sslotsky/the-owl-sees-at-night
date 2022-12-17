@@ -36,6 +36,14 @@ export default component$((props: Props) => {
       const scale = Math.min(maxX, maxY);
       state.width = state.x * scale / state.zoomFactor;
       state.height = state.y * scale / state.zoomFactor;
+
+      if ((state.top + state.height) > img.clientHeight) {
+        state.top -= state.top + state.height - img.clientHeight;
+      } 
+
+      if ((state.left + state.width) > img.clientWidth) {
+        state.left -= state.left + state.width - img.clientWidth;
+      }
     }
   })
 
@@ -74,9 +82,37 @@ export default component$((props: Props) => {
   return (
     <div class="print-picker">
       <div class="left-column">
-        <div class="crop-zone">
+        <div class="crop-zone"
+          onPointerMove$={(e) => {
+            if (state.moving) {
+              state.left = Math.max(
+                0,
+                Math.min(
+                  state.left + e.movementX,
+                  (image.value?.clientWidth || 0) - state.width
+                )
+              )
+              state.top = Math.max(
+                0,
+                Math.min(
+                  state.top + e.movementY,
+                  (image.value?.clientHeight || 0) - state.height
+                )
+              )
+            }
+          }}
+        >
           <img ref={image} src={file.url} />
-          <div class="overlay">
+          <div class="overlay"
+            onPointerOut$={(evt, el) => {
+              if (!el.contains(evt.relatedTarget as HTMLElement)) {
+                state.moving = false;
+              }
+            }}
+            onPointerUp$={() => {
+              state.moving = false;
+            }}
+          >
             <img
               ref={window}
               preventdefault:pointerdown
@@ -84,30 +120,6 @@ export default component$((props: Props) => {
               src={file.url}
               onPointerDown$={() => {
                 state.moving = true;
-              }}
-              onPointerUp$={() => {
-                state.moving = false;
-              }}
-              onPointerOut$={() => {
-                state.moving = false;
-              }}
-              onPointerMove$={(e) => {
-                if (state.moving) {
-                  state.left = Math.max(
-                    0,
-                    Math.min(
-                      state.left + e.movementX,
-                      (image.value?.clientWidth || 0) - state.width
-                    )
-                  )
-                  state.top = Math.max(
-                    0,
-                    Math.min(
-                      state.top + e.movementY,
-                      (image.value?.clientHeight || 0) - state.height
-                    )
-                  )
-                }
               }}
             />
           </div>
@@ -147,12 +159,10 @@ export default component$((props: Props) => {
                   max={100}
                   value={1}
                   onInput$={(_evt, el: HTMLInputElement) => {
-                    console.log(el.value)
                     const maxZoomFactor = file.width / image.value!.clientWidth;
                     const val = parseInt(el.value, 10);
                     const scaledValue = (val - 1) / (100 - 1) * (maxZoomFactor - 1) + 1;
                     state.zoomFactor = scaledValue;
-                    console.log(state.zoomFactor);
                   }}
                 />
               </label>
