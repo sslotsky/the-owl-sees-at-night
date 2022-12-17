@@ -46,3 +46,9 @@ img {
 .rotate {
   margin-bottom: 1rem;
 }
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  max-width: min-content;
+}

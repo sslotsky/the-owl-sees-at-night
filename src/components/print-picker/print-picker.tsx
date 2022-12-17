@@ -20,20 +20,22 @@ export default component$((props: Props) => {
     height: 0,
     x: 8.5,
     y: 11,
-    moving: false
+    moving: false,
+    zoomFactor: 1
   });
 
   useClientEffect$((ctx) => {
     ctx.track(() => state.x)
     ctx.track(() => state.y)
+    ctx.track(() => state.zoomFactor)
 
     if (image.value) {
       const img = image.value;
       const maxX = img.clientWidth / state.x;
       const maxY = img.clientHeight / state.y;
       const scale = Math.min(maxX, maxY);
-      state.width = state.x * scale;
-      state.height = state.y * scale;
+      state.width = state.x * scale / state.zoomFactor;
+      state.height = state.y * scale / state.zoomFactor;
     }
   })
 
@@ -42,6 +44,8 @@ export default component$((props: Props) => {
     ctx.track(() => state.y)
     ctx.track(() => state.top)
     ctx.track(() => state.left)
+    ctx.track(() => state.width)
+    ctx.track(() => state.height)
 
     if (window.value && canvas.value && image.value) {
       const el = canvas.value as HTMLCanvasElement;
@@ -128,7 +132,7 @@ export default component$((props: Props) => {
         <div>
           <h2>Print Preview</h2>
           <div class="print-preview">
-            <div>
+            <div class="controls">
               <button onClick$={() => {
                 const oldX = state.x;
                 state.x = state.y;
@@ -136,6 +140,22 @@ export default component$((props: Props) => {
                 state.left = 0;
                 state.top = 0;
               }} class="rotate">🔄 Rotate</button>
+              <label>
+                Zoom in
+                <input type="range"
+                  min={1}
+                  max={100}
+                  value={1}
+                  onInput$={(_evt, el: HTMLInputElement) => {
+                    console.log(el.value)
+                    const maxZoomFactor = file.width / image.value!.clientWidth;
+                    const val = parseInt(el.value, 10);
+                    const scaledValue = (val - 1) / (100 - 1) * (maxZoomFactor - 1) + 1;
+                    state.zoomFactor = scaledValue;
+                    console.log(state.zoomFactor);
+                  }}
+                />
+              </label>
             </div>
             <canvas style={`height: ${state.y * 20}px; width: ${state.x * 20}px;`} height={state.y * 40} width={state.x * 40} ref={canvas}></canvas>
           </div>
