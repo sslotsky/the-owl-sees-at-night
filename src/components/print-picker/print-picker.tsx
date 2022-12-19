@@ -66,6 +66,7 @@ export default component$((props: Props) => {
       const el = canvas.value as HTMLCanvasElement;
       const context = el.getContext('2d');
       const scale = file.width / image.value.clientWidth;
+
       context?.clearRect(0, 0, el.width, el.height);
       context?.drawImage(
         window.value as HTMLImageElement,
@@ -155,6 +156,17 @@ export default component$((props: Props) => {
                 state.x = state.y;
                 state.y = oldX;
               }} class="rotate">🔄 Rotate</button>
+              <button onClick$={() => {
+                const [left, top, width, height] = [
+                  state.left, state.top, state.width, state.height
+                ].map(n => n * (file.width / image.value!.clientWidth))
+
+                const transform = `tr:w-${width},h-${height},cm-extract,x-${left},y-${top}`;
+
+                console.log(
+                  `https://ik.imagekit.io/q1wev0ugv/${transform}/Trip_to_Schroeder_and_Grand_Marais/IMG_20170813_164048.jpg`
+                );
+              }}>Add to cart</button>
               <label>
                 Zoom in
                 <input type="range"
