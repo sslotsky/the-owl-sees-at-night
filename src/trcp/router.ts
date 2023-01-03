@@ -7,7 +7,41 @@ const imageKitId = import.meta.env.VITE_IMAGE_KIT_ID;
 const publicKey = import.meta.env.VITE_IMAGE_KIT_PUBLIC_KEY;
 const privateKey = import.meta.env.VITE_IMAGE_KIT_PRIVATE_KEY;
 
+function mapFile(imageKit: ImageKit) {
+  return function(f: FileObject): MasonryPhoto {
+    return {
+      ...f,
+      originalUrl: imageKit.url({
+        path: f.filePath,
+        signed: true,
+      }),
+      masonryUrl: imageKit.url({
+        path: f.filePath,
+        signed: true,
+        transformation: [{
+          named: 'masonry'
+        }]
+      }),
+      fullSizeUrl: imageKit.url({
+        path: f.filePath,
+        signed: true,
+        transformation: [{
+          named: 'full_size'
+        }]
+      }),
+      fullSizeBlurUrl: imageKit.url({
+        path: f.filePath,
+        signed: true,
+        transformation: [{
+          named: 'full_size_blur'
+        }]
+      })
+    };
+  }
+}
+
 export interface MasonryPhoto extends FileObject {
+  originalUrl: string;
   masonryUrl: string;
   fullSizeUrl: string;
   fullSizeBlurUrl: string;
@@ -19,14 +53,16 @@ export const appRouter = t.router({
     .input(
       z.string()
     )
-    .query<FileObject>(async ({ input: fileId }) => {
+    .query<MasonryPhoto>(async ({ input: fileId }) => {
       const imageKit = new ImageKit({
         publicKey,
         privateKey,
         urlEndpoint: `https://ik.imagekit.io/${imageKitId}/`,
       });
 
-      return imageKit.getFileDetails(fileId);
+      const file = await imageKit.getFileDetails(fileId);
+
+      return mapFile(imageKit)(file);
     }),
   searchPhotos: t.procedure
     .query<MasonryPhoto[]>(async () => {
@@ -41,30 +77,7 @@ export const appRouter = t.router({
         sort: 'DESC_UPDATED'
       });
 
-      return files.map(f => ({
-        ...f,
-        masonryUrl: imageKit.url({
-          path: f.filePath,
-          signed: true,
-          transformation: [{
-            named: 'masonry'
-          }]
-        }),
-        fullSizeUrl: imageKit.url({
-          path: f.filePath,
-          signed: true,
-          transformation: [{
-            named: 'full_size'
-          }]
-        }),
-        fullSizeBlurUrl: imageKit.url({
-          path: f.filePath,
-          signed: true,
-          transformation: [{
-            named: 'full_size_blur'
-          }]
-        })
-      }))
+      return files.map(mapFile(imageKit));
     })
 });
 

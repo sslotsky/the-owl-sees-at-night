@@ -1,10 +1,11 @@
 import { component$, useClientEffect$, useSignal, useStore, useStylesScoped$ } from '@builder.io/qwik';
-import { FileObject } from 'imagekit/dist/libs/interfaces';
+import { addToOrder } from '../shop-context/context';
 import { woodPrints } from '~/biz/prints';
+import { MasonryPhoto } from '~/trcp/router';
 import styles from './print-picker.css?inline';
 
 interface Props {
-  file: FileObject;
+  file: MasonryPhoto;
 }
 
 export default component$((props: Props) => {
@@ -87,6 +88,14 @@ export default component$((props: Props) => {
 
   const clipPath = `clip-path: inset(${offsetTop}px ${offsetRight}px ${offsetBottom}px ${offsetLeft}px)`;
 
+  const [left, top, width, height] = [
+    state.left, state.top, state.width, state.height
+  ].map(n => n * (file.width / (image.value?.clientWidth || 1)))
+
+  const transform = `tr:w-${width},h-${height},cm-extract,x-${left},y-${top}`;
+
+  const execute$ = addToOrder(1, 1, file.fileId, transform);
+
   return (
     <div class="print-picker">
       <div class="left-column">
@@ -110,7 +119,7 @@ export default component$((props: Props) => {
             }
           }}
         >
-          <img ref={image} src={file.url} />
+          <img ref={image} src={file.originalUrl} />
           <div class="overlay"
             onPointerOut$={(evt, el) => {
               if (!el.contains(evt.relatedTarget as HTMLElement)) {
@@ -125,7 +134,7 @@ export default component$((props: Props) => {
               ref={window}
               preventdefault:pointerdown
               style={clipPath}
-              src={file.url}
+              src={file.originalUrl}
               onPointerDown$={() => {
                 state.moving = true;
               }}
@@ -166,6 +175,8 @@ export default component$((props: Props) => {
                 console.log(
                   `https://ik.imagekit.io/q1wev0ugv/${transform}/Trip_to_Schroeder_and_Grand_Marais/IMG_20170813_164048.jpg`
                 );
+
+                execute$();
               }}>Add to cart</button>
               <label>
                 Zoom in

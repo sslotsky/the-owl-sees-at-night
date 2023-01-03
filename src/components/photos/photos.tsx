@@ -29,21 +29,22 @@ export default component$((props: Props) => {
 
   return (
     <div>
-      {isViewing && (
+      {isViewing ? (
         <div class="full">
-          <Image photo={files[Math.abs(viewing % files.length)]} />
+          <Image photo={files.at(viewing % files.length)!} />
           <a class="prev" href={prevUrl.toString()}>&lsaquo;</a>
           <a class="close" href={gridUrl.toString()}>x</a>
           <a class="next" href={nextUrl.toString()}>&rsaquo;</a>
         </div>
+      ) : (
+        <div id="photos" data-viewing={isViewing}>
+          {props.files.map((f: MasonryPhoto, index: number) => (
+            <a href={getUrl(index)}>
+              <img src={f.masonryUrl} alt={f.name} />
+            </a>
+          ))}
+        </div>
       )}
-      <div id="photos" data-viewing={isViewing}>
-        {props.files.map((f: MasonryPhoto, index: number) => (
-          <a href={getUrl(index)}>
-            <img src={f.masonryUrl} alt={f.name} />
-          </a>
-        ))}
-      </div>
     </div>
   )
 });
