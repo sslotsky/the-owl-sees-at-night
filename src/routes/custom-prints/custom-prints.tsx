@@ -1,14 +1,11 @@
-import { component$, useStylesScoped$, useSignal, Signal } from '@builder.io/qwik';
+import { component$, useStyles$, useStore, useSignal } from '@builder.io/qwik';
 import { CustomPrintQuery } from '~/gql/graphql';
 import { MasonryPhoto } from '~/trcp/router';
+import Image from './image';
 import styles from './custom-prints.css?inline';
+import Preview from './preview';
+import { VariantArray, Variant } from './types';
 
-
-type CustomPrint = NonNullable<CustomPrintQuery["product"]>;
-type VariantArray = CustomPrint["variants"];
-
-type Unarray<T> = T extends Array<infer U> ? U : never;
-type Variant = NonNullable<Unarray<VariantArray>>;
 
 export function groupedVariants(data: CustomPrintQuery) {
   if (!data.product) {
@@ -38,9 +35,9 @@ export function sortedPrints(prints: Variant[]) {
   });
 }
 
-export const Tabs = (props: { data: CustomPrintQuery, material: Signal<string>, variant: Signal<Variant> }) => {
+export const Tabs = (props: { data: CustomPrintQuery, store: { material: string, variant: Variant } }) => {
   const groups = groupedVariants(props.data);
-  const selectedGroup = sortedPrints(groups[props.material.value]);
+  const selectedGroup = sortedPrints(groups[props.store.material]);
 
   return (
     <div class="tabs">
@@ -48,9 +45,9 @@ export const Tabs = (props: { data: CustomPrintQuery, material: Signal<string>, 
         {Object.keys(groups).map((k) => (
           <button
             preventdefault:click
-            class={`tab ${k === props.material.value ? 'active' : ''}`}
+            class={`tab ${k === props.store.material ? 'active' : ''}`}
             onClick$={() => { 
-              props.material.value = k;
+              props.store.material = k;
             }}
           >{k}</button>
         ))}
@@ -59,7 +56,7 @@ export const Tabs = (props: { data: CustomPrintQuery, material: Signal<string>, 
         <div class="tab-content">
           {selectedGroup && selectedGroup.map((variant) => (
             <div class="flex-wrapper">
-              <div onClick$={() => props.variant.value = variant} class={`print-size ${variant.id === props.variant.value.id ? 'active' : ''}`} style={`height: ${variant.customFields!.height! * 10}px; width: ${variant.customFields!.width! * 10}px`}>
+              <div onClick$={() => props.store.variant = variant} class={`print-size ${variant.id === props.store.variant.id ? 'active' : ''}`} style={`height: ${variant.customFields!.height! * 10}px; width: ${variant.customFields!.width! * 10}px`}>
                 <p>{variant.customFields?.width}x{variant.customFields?.height}</p>
               </div>
             </div>
@@ -75,28 +72,70 @@ export default component$((props: {
   files: MasonryPhoto[],
   productData: CustomPrintQuery
 }) => {
-  useStylesScoped$(styles);
+  useStyles$(styles);
+  if (!props.productData.product?.variants.length || !props.files.length) {
+    return <></>;
+  }
+
   const prints = sortedPrints(props.productData.product!.variants!);
-  const material = useSignal(prints[0].customFields?.material || '');
-  const selectedVariant = useSignal<Variant>(prints[0]!);
+  const store = useStore({
+    variant: prints[0],
+    file: props.files[0],
+    material: prints[0].customFields?.material || '',
+    gridView: true,
+    cropperTop: 0,
+    cropperLeft: 0,
+    cropperHeight: 0,
+    cropperWidth: 0
+  });
+
+  const image = useSignal<HTMLImageElement>();
+  const window = useSignal<HTMLImageElement>();
 
   return (
     <div class="custom-prints">
       <div>
         <div class="scroll-container">
-          <div class="photo-grid">
-            {props.files.map((f) => (
-              <img src={f.masonryUrl} alt={f.name} />
-            ))}
-          </div>
+          {store.gridView ? (
+            <div class="photo-grid">
+              {props.files.map((f) => (
+                <img 
+                  onClick$={() => { 
+                    store.file = f; 
+                    store.gridView = false;
+                  }} 
+                  loading="lazy"
+                  src={f.masonryUrl}
+                  alt={f.name}
+                />
+              ))}
+            </div>
+          ) : (
+            <div class="photo-crop">
+              <div>
+                <button onClick$={() => { store.gridView = true }}>Back to grid</button>
+                <button onClick$={() => {
+                  const index = props.files.indexOf(store.file) - 1;
+                  store.file = props.files.at(index % props.files.length)!;
+                }}>Prev</button>
+                <button onClick$={() => {
+                  const index = props.files.indexOf(store.file) + 1;
+                  store.file = props.files.at(index % props.files.length)!;
+                }}>Next</button>
+              </div>
+              <div class="crop-region">
+                <Image store={store} imageRef={image} windowRef={window} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div class="options-selector">
         <div class="preview-area">
-
+          <Preview store={store} image={image} window={window} />
         </div>
         <div class="selector-area">
-          <Tabs data={props.productData} material={material} variant={selectedVariant} />
+          <Tabs data={props.productData} store={store} />
         </div>
       </div>
     </div>

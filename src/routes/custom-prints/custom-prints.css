@@ -118,3 +118,35 @@
 .print-size.active {
   filter: brightness(2);
 }
+
+.preview-area {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.photo-crop {
+  height: var(--max-height);
+}
+
+.crop-region {
+  position: relative;
+  display: flex;
+}
+
+.photo-crop .crop-region img {
+  max-width: 100%;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+}
