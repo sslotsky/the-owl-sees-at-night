@@ -150,3 +150,7 @@
   position: relative;
   display: flex;
 }
+
+.controls {
+  padding: 1rem;
+}

@@ -132,7 +132,16 @@ export default component$((props: {
       </div>
       <div class="options-selector">
         <div class="preview-area">
-          <Preview store={store} image={image} window={window} />
+          <div class="controls">
+            <button onClick$={() => {
+              const oldWidth = store.cropperWidth;
+              store.cropperWidth = store.cropperHeight;
+              store.cropperHeight = oldWidth;
+            }} class="rotate">🔄 Rotate</button>
+          </div>
+          <div>
+            <Preview store={store} image={image} window={window} />
+          </div>
         </div>
         <div class="selector-area">
           <Tabs data={props.productData} store={store} />
