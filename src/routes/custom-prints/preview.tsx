@@ -28,7 +28,6 @@ export default component$((props: Props) => {
   useClientEffect$(async ({ track }) => {
     track(() => props.store.file)
     track(() => props.store.variant)
-    track(() => props.window)
     track(() => props.store.cropperTop)
     track(() => props.store.cropperLeft)
     track(() => props.store.cropperWidth)

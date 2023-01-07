@@ -154,3 +154,7 @@
 .controls {
   padding: 1rem;
 }
+
+.crop-window {
+  cursor: pointer;
+}

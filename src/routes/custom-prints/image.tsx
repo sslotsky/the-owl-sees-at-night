@@ -121,6 +121,7 @@ export default component$((props: Props) => {
         class="overlay"
       >
         <img 
+          class="crop-window"
           style={clipPath} 
           preventdefault:pointerdown
           onPointerDown$={() => {
