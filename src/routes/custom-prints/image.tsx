@@ -27,23 +27,31 @@ export default component$((props: Props) => {
   });
 
   useClientEffect$(async ({ track }) => {
-    track(() => props.store.variant)
-    track(() => props.store.cropperHeight)
-    track(() => props.store.cropperWidth)
-    track(() => props.store.printSizeX)
-    track(() => props.store.printSizeY)
+    track(() => props.store.file)
+    url.value = props.store.file.fullSizeBlurUrl;
+    const image = new Image();
+    image.src = props.store.file.fullSizeUrl;
+    image.decode().then(() => {
+      url.value = image.src;
+    });
+  });
 
-    if (props.imageRef.value) {
-      const img = props.imageRef.value;
-      // const maxX = img.clientWidth / state.x;
-      // const maxY = img.clientHeight / state.y;
-      // const scale = Math.min(maxX, maxY);
-      // state.width = state.x * scale / state.zoomFactor;
-      // state.height = state.y * scale / state.zoomFactor;
-
+  useClientEffect$(async ({ track }) => {
+    track(() => props.store.file);
+    track(() => props.store.printSizeX);
+    track(() => props.store.printSizeY);
+    if (props.windowRef.value) {
+      const img = props.windowRef.value;
       img.decode().then(() => {
+        const maxX = img.clientWidth / props.store.printSizeX;
+        const maxY = img.clientHeight / props.store.printSizeY;
+        const scale = Math.min(maxX, maxY);
+        props.store.cropperWidth = props.store.printSizeX * scale;
+        props.store.cropperHeight = props.store.printSizeY * scale;
+        cropper.imageWidth = img.clientWidth;
+        cropper.imageHeight = img.clientHeight;
 
-      if (cropper.initialized) {
+        if (cropper.initialized) {
           if ((props.store.cropperTop + props.store.cropperHeight) > img.clientHeight) {
             props.store.cropperTop -= props.store.cropperTop + props.store.cropperHeight - img.clientHeight;
           } 
@@ -56,35 +64,6 @@ export default component$((props: Props) => {
           props.store.cropperLeft = (img.clientWidth - props.store.cropperWidth) / 2; 
           props.store.cropperTop = (img.clientHeight - props.store.cropperHeight) / 2;
         }
-      })
-    }
-  })
-  useClientEffect$(async ({ track }) => {
-    track(() => props.store.file)
-    url.value = props.store.file.fullSizeBlurUrl;
-    const image = new Image();
-    image.src = props.store.file.fullSizeUrl;
-    image.decode().then(() => {
-      url.value = image.src;
-    });
-  });
-
-  useClientEffect$(async ({ track }) => {
-    track(() => props.store.variant);
-    track(() => props.store.file);
-    track(() => props.store.printSizeX);
-    track(() => props.store.printSizeY);
-    if (props.windowRef.value && props.store.variant.customFields) {
-      const img = props.windowRef.value;
-      img.decode().then(() => {
-        const maxX = img.clientWidth / props.store.printSizeX;
-        const maxY = img.clientHeight / props.store.printSizeY;
-        const scale = Math.min(maxX, maxY);
-        console.log(scale);
-        props.store.cropperWidth = props.store.printSizeX * scale;
-        props.store.cropperHeight = props.store.printSizeY * scale;
-        cropper.imageWidth = img.clientWidth;
-        cropper.imageHeight = img.clientHeight;
       });
     }
   });
