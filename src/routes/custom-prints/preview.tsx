@@ -20,9 +20,6 @@ export interface Props {
 export const SCALE = 20;
 
 export default component$((props: Props) => {
-  // const customFields = props.store.variant.customFields || {};
-  // const height = customFields.height || 0;
-  // const width = customFields.width || 0;
   const canvas = useSignal<HTMLCanvasElement>();
 
   useClientEffect$(async ({ track }) => {
@@ -32,8 +29,6 @@ export default component$((props: Props) => {
     track(() => props.store.cropperLeft)
     track(() => props.store.cropperWidth)
     track(() => props.store.cropperHeight)
-    track(() => props.store.printSizeX)
-    track(() => props.store.printSizeY)
 
     if (props.window.value) {
       const img = props.window.value;
@@ -55,15 +50,50 @@ export default component$((props: Props) => {
           )
         }
       })
+    } else {
+      const image = new Image();
+      image.src = '/sample-image.webp';
+      image.decode().then(() => {
+        if (canvas.value) {
+          const ctx = canvas.value.getContext('2d');
+          if (!ctx) {
+            return;
+          }
+
+          const maxX = image.naturalWidth / props.store.printSizeX;
+          const maxY = image.naturalHeight / props.store.printSizeY;
+          const scale = Math.min(maxX, maxY);
+          ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+          ctx.drawImage(
+            image,
+            0, 0,
+            props.store.printSizeX * scale, props.store.printSizeY * scale,
+            0, 0,
+            canvas.value.width, canvas.value.height
+          )
+        }
+      })
     }
   });
 
   return (
-    <canvas 
-      style={`height: ${props.store.printSizeY * SCALE}px; width: ${props.store.printSizeX * SCALE}px; border: 1px solid black;`} 
-      height={props.store.printSizeY * SCALE * 2}
-      width={props.store.printSizeX * SCALE * 2}
-      ref={canvas} 
-    />
+    <>
+      <canvas 
+        style={`height: ${props.store.printSizeY * SCALE}px; width: ${props.store.printSizeX * SCALE}px; border: 1px solid black;`} 
+        height={props.store.printSizeY * SCALE * 2}
+        width={props.store.printSizeX * SCALE * 2}
+        ref={canvas} 
+      />
+      {!props.window.value && (
+        <div
+          style={`height: ${props.store.printSizeY * SCALE}px; width: ${props.store.printSizeX * SCALE}px;`} 
+          class="preview-overlay"
+        >
+          <p>
+            Please Select a Photo
+          </p>
+        </div>
+      )}
+    </>
   )
 })

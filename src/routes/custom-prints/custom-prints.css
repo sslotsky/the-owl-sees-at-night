@@ -158,3 +158,23 @@
 .crop-window {
   cursor: pointer;
 }
+
+.preview {
+  display: flex;
+}
+
+.preview-overlay {
+  position: absolute;
+  font-size: 0.6rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid transparent;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.preview-overlay p {
+  width: 100%;
+}

@@ -64,7 +64,10 @@ export default component$((props: Props) => {
           props.store.cropperLeft = (img.clientWidth - props.store.cropperWidth) / 2; 
           props.store.cropperTop = (img.clientHeight - props.store.cropperHeight) / 2;
         }
-      });
+      }).catch(
+        // This happens if the user is quickly changing their photo selection.
+        // It's not really an error and creates no negative side effects.
+      );
     }
   });
 

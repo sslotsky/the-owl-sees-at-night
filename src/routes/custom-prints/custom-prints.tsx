@@ -148,7 +148,7 @@ export default component$((props: {
               store.printSizeY = oldX;
             }} class="rotate">🔄 Rotate</button>
           </div>
-          <div>
+          <div class="preview">
             <Preview store={store} image={image} window={window} />
           </div>
         </div>
