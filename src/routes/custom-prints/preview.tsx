@@ -12,6 +12,7 @@ export interface Props {
     cropperWidth: number;
     printSizeX: number;
     printSizeY: number;
+    gridView: boolean;
   },
   image: Signal<HTMLImageElement | undefined>
   window: Signal<HTMLImageElement | undefined>
@@ -25,6 +26,7 @@ export default component$((props: Props) => {
   useClientEffect$(async ({ track }) => {
     track(() => props.store.file)
     track(() => props.store.variant)
+    track(() => props.store.gridView)
     track(() => props.store.cropperTop)
     track(() => props.store.cropperLeft)
     track(() => props.store.cropperWidth)
@@ -32,27 +34,7 @@ export default component$((props: Props) => {
     track(() => props.store.printSizeX)
     track(() => props.store.printSizeY)
 
-    if (props.window.value) {
-      const img = props.window.value;
-      img.decode().then(() => {
-        if (canvas.value && img) {
-          const ctx = canvas.value.getContext('2d');
-          if (!ctx) {
-            return;
-          }
-
-          const scale = img.naturalWidth / img.clientWidth;
-          ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
-          ctx.drawImage(
-            img,
-            props.store.cropperLeft * scale, props.store.cropperTop * scale,
-            props.store.cropperWidth * scale, props.store.cropperHeight * scale,
-            0, 0,
-            canvas.value.width, canvas.value.height
-          )
-        }
-      })
-    } else {
+    if (props.store.gridView) {
       const image = new Image();
       image.src = '/sample-image.webp';
       image.decode().then(() => {
@@ -75,8 +57,28 @@ export default component$((props: Props) => {
           )
         }
       })
-    }
-  });
+    } else if (props.window.value) {
+      const img = props.window.value;
+      img.decode().then(() => {
+        if (canvas.value && img) {
+          const ctx = canvas.value.getContext('2d');
+          if (!ctx) {
+            return;
+          }
+
+          const scale = img.naturalWidth / img.clientWidth;
+          ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+          ctx.drawImage(
+            img,
+            props.store.cropperLeft * scale, props.store.cropperTop * scale,
+            props.store.cropperWidth * scale, props.store.cropperHeight * scale,
+            0, 0,
+            canvas.value.width, canvas.value.height
+          )
+        }
+      })
+    } 
+  })
 
   return (
     <>
@@ -86,7 +88,7 @@ export default component$((props: Props) => {
         width={props.store.printSizeX * SCALE * 2}
         ref={canvas} 
       />
-      {!props.window.value && (
+      {props.store.gridView && (
         <div
           style={`height: ${props.store.printSizeY * SCALE}px; width: ${props.store.printSizeX * SCALE}px;`} 
           class="preview-overlay"

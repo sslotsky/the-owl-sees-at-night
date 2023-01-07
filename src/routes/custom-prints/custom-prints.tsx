@@ -139,8 +139,8 @@ export default component$((props: {
           )}
         </div>
       </div>
-      <div class="options-selector">
-        <div class="preview-area brick-wall">
+      <div class="options-selector brick-wall">
+        <div class="preview-area">
           <div class="controls">
             <button onClick$={() => {
               const oldX = store.printSizeX;
