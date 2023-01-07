@@ -10,6 +10,8 @@ export interface Props {
     cropperTop: number;
     cropperHeight: number;
     cropperWidth: number;
+    printSizeX: number;
+    printSizeY: number;
   },
   image: Signal<HTMLImageElement | undefined>
   window: Signal<HTMLImageElement | undefined>
@@ -18,9 +20,9 @@ export interface Props {
 export const SCALE = 20;
 
 export default component$((props: Props) => {
-  const customFields = props.store.variant.customFields || {};
-  const height = customFields.height || 0;
-  const width = customFields.width || 0;
+  // const customFields = props.store.variant.customFields || {};
+  // const height = customFields.height || 0;
+  // const width = customFields.width || 0;
   const canvas = useSignal<HTMLCanvasElement>();
 
   useClientEffect$(async ({ track }) => {
@@ -31,6 +33,8 @@ export default component$((props: Props) => {
     track(() => props.store.cropperLeft)
     track(() => props.store.cropperWidth)
     track(() => props.store.cropperHeight)
+    track(() => props.store.printSizeX)
+    track(() => props.store.printSizeY)
 
     if (props.window.value) {
       const img = props.window.value;
@@ -57,9 +61,9 @@ export default component$((props: Props) => {
 
   return (
     <canvas 
-      style={`height: ${height * SCALE}px; width: ${width * SCALE}px; border: 1px solid black;`} 
-      height={height * SCALE * 2}
-      width={width * SCALE * 2}
+      style={`height: ${props.store.printSizeY * SCALE}px; width: ${props.store.printSizeX * SCALE}px; border: 1px solid black;`} 
+      height={props.store.printSizeY * SCALE * 2}
+      width={props.store.printSizeX * SCALE * 2}
       ref={canvas} 
     />
   )

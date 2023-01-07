@@ -10,6 +10,8 @@ interface Props {
     cropperLeft: number;
     cropperHeight: number;
     cropperWidth: number;
+    printSizeX: number;
+    printSizeY: number;
   },
   imageRef: Signal<HTMLImageElement | undefined>
   windowRef: Signal<HTMLImageElement | undefined>
@@ -64,16 +66,17 @@ export default component$((props: Props) => {
   useClientEffect$(async ({ track }) => {
     track(() => props.store.variant);
     track(() => props.store.file);
+    track(() => props.store.printSizeX);
+    track(() => props.store.printSizeY);
     if (props.windowRef.value && props.store.variant.customFields) {
-      const { width, height } = props.store.variant.customFields;
       const img = props.windowRef.value;
       img.decode().then(() => {
-        const maxX = img.clientWidth / width!;
-        const maxY = img.clientHeight / height!;
+        const maxX = img.clientWidth / props.store.printSizeX;
+        const maxY = img.clientHeight / props.store.printSizeY;
         const scale = Math.min(maxX, maxY);
         console.log(scale);
-        props.store.cropperWidth = width! * scale;
-        props.store.cropperHeight = height! * scale;
+        props.store.cropperWidth = props.store.printSizeX * scale;
+        props.store.cropperHeight = props.store.printSizeY * scale;
         cropper.imageWidth = img.clientWidth;
         cropper.imageHeight = img.clientHeight;
       });

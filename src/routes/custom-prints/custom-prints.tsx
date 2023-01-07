@@ -1,4 +1,4 @@
-import { component$, useStyles$, useStore, useSignal } from '@builder.io/qwik';
+import { component$, useStyles$, useStore, useSignal, useTask$ } from '@builder.io/qwik';
 import { CustomPrintQuery } from '~/gql/graphql';
 import { MasonryPhoto } from '~/trcp/router';
 import Image from './image';
@@ -86,8 +86,17 @@ export default component$((props: {
     cropperTop: 0,
     cropperLeft: 0,
     cropperHeight: 0,
-    cropperWidth: 0
+    cropperWidth: 0,
+    printSizeX: prints[0].customFields?.width || 0,
+    printSizeY: prints[0].customFields?.height || 0
   });
+
+  useTask$(({ track }) => {
+    track(() => store.variant)
+
+    store.printSizeX = store.variant.customFields?.width || 0;
+    store.printSizeY = store.variant.customFields?.height || 0;
+  })
 
   const image = useSignal<HTMLImageElement>();
   const window = useSignal<HTMLImageElement>();
@@ -134,9 +143,9 @@ export default component$((props: {
         <div class="preview-area">
           <div class="controls">
             <button onClick$={() => {
-              const oldWidth = store.cropperWidth;
-              store.cropperWidth = store.cropperHeight;
-              store.cropperHeight = oldWidth;
+              const oldX = store.printSizeX;
+              store.printSizeX = store.printSizeY;
+              store.printSizeY = oldX;
             }} class="rotate">🔄 Rotate</button>
           </div>
           <div>
