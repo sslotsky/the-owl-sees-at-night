@@ -29,6 +29,8 @@ export default component$((props: Props) => {
     track(() => props.store.cropperLeft)
     track(() => props.store.cropperWidth)
     track(() => props.store.cropperHeight)
+    track(() => props.store.printSizeX)
+    track(() => props.store.printSizeY)
 
     if (props.window.value) {
       const img = props.window.value;
