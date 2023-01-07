@@ -104,7 +104,7 @@ export default component$((props: {
   return (
     <div class="custom-prints">
       <div>
-        <div class="scroll-container">
+        <div class="scroll-container hero-hex">
           {store.gridView ? (
             <div class="photo-grid">
               {props.files.map((f) => (
@@ -140,7 +140,7 @@ export default component$((props: {
         </div>
       </div>
       <div class="options-selector">
-        <div class="preview-area">
+        <div class="preview-area brick-wall">
           <div class="controls">
             <button onClick$={() => {
               const oldX = store.printSizeX;
