@@ -27,8 +27,11 @@ export default component$((props: Props) => {
   });
 
   useClientEffect$(async ({ track }) => {
+    track(() => props.store.variant)
     track(() => props.store.cropperHeight)
     track(() => props.store.cropperWidth)
+    track(() => props.store.printSizeX)
+    track(() => props.store.printSizeY)
 
     if (props.imageRef.value) {
       const img = props.imageRef.value;
@@ -38,19 +41,22 @@ export default component$((props: Props) => {
       // state.width = state.x * scale / state.zoomFactor;
       // state.height = state.y * scale / state.zoomFactor;
 
-      if (cropper.initialized) {
-        if ((props.store.cropperTop + props.store.cropperHeight) > img.clientHeight) {
-          props.store.cropperTop -= props.store.cropperTop + props.store.cropperHeight - img.clientHeight;
-        } 
+      img.decode().then(() => {
 
-        if ((props.store.cropperLeft + props.store.cropperWidth) > img.clientWidth) {
-          props.store.cropperLeft -= props.store.cropperLeft + props.store.cropperWidth - img.clientWidth;
+      if (cropper.initialized) {
+          if ((props.store.cropperTop + props.store.cropperHeight) > img.clientHeight) {
+            props.store.cropperTop -= props.store.cropperTop + props.store.cropperHeight - img.clientHeight;
+          } 
+
+          if ((props.store.cropperLeft + props.store.cropperWidth) > img.clientWidth) {
+            props.store.cropperLeft -= props.store.cropperLeft + props.store.cropperWidth - img.clientWidth;
+          }
+        } else {
+          cropper.initialized = true;
+          props.store.cropperLeft = (img.clientWidth - props.store.cropperWidth) / 2; 
+          props.store.cropperTop = (img.clientHeight - props.store.cropperHeight) / 2;
         }
-      } else {
-        cropper.initialized = true;
-        props.store.cropperLeft = (img.clientWidth - props.store.cropperWidth) / 2; 
-        props.store.cropperTop = (img.clientHeight - props.store.cropperHeight) / 2;
-      }
+      })
     }
   })
   useClientEffect$(async ({ track }) => {
