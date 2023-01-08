@@ -88,7 +88,8 @@ export default component$((props: {
     cropperHeight: 0,
     cropperWidth: 0,
     printSizeX: prints[0].customFields?.width || 0,
-    printSizeY: prints[0].customFields?.height || 0
+    printSizeY: prints[0].customFields?.height || 0,
+    zoomFactor: 1
   });
 
   useTask$(({ track }) => {
@@ -144,6 +145,21 @@ export default component$((props: {
       <div class="options-selector">
         <div class="preview-area">
           <div class="controls">
+            <label class="zoom">
+              Zoom in
+              <input type="range"
+                min={1}
+                max={100}
+                value={1}
+                disabled={store.gridView}
+                onInput$={(_evt, el: HTMLInputElement) => {
+                  const maxZoomFactor = image.value!.naturalWidth / image.value!.clientWidth;
+                  const val = parseInt(el.value, 10);
+                  const scaledValue = (val - 1) / (100 - 1) * (maxZoomFactor - 1) + 1;
+                  store.zoomFactor = scaledValue;
+                }}
+              />
+            </label>
             <button onClick$={() => {
               const oldX = store.printSizeX;
               store.printSizeX = store.printSizeY;

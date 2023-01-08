@@ -13,6 +13,7 @@ interface Props {
     cropperWidth: number;
     printSizeX: number;
     printSizeY: number;
+    zoomFactor: number;
   },
   imageRef: Signal<HTMLImageElement | undefined>
   windowRef: Signal<HTMLImageElement | undefined>
@@ -33,14 +34,15 @@ export default component$((props: Props) => {
     track(() => props.store.file);
     track(() => props.store.printSizeX);
     track(() => props.store.printSizeY);
+    track(() => props.store.zoomFactor);
     if (props.windowRef.value) {
       const img = props.windowRef.value;
       img.decode().then(() => {
         const maxX = img.clientWidth / props.store.printSizeX;
         const maxY = img.clientHeight / props.store.printSizeY;
         const scale = Math.min(maxX, maxY);
-        props.store.cropperWidth = props.store.printSizeX * scale;
-        props.store.cropperHeight = props.store.printSizeY * scale;
+        props.store.cropperWidth = props.store.printSizeX * scale / props.store.zoomFactor;
+        props.store.cropperHeight = props.store.printSizeY * scale / props.store.zoomFactor;
         cropper.imageWidth = img.clientWidth;
         cropper.imageHeight = img.clientHeight;
 
