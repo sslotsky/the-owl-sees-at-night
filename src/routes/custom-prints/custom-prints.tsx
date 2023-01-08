@@ -121,19 +121,21 @@ export default component$((props: {
             </div>
           ) : (
             <div class="photo-crop">
-              <div>
-                <button onClick$={() => { store.gridView = true }}>Back to grid</button>
-                <button onClick$={() => {
-                  const index = props.files.indexOf(store.file) - 1;
-                  store.file = props.files.at(index % props.files.length)!;
-                }}>Prev</button>
-                <button onClick$={() => {
-                  const index = props.files.indexOf(store.file) + 1;
-                  store.file = props.files.at(index % props.files.length)!;
-                }}>Next</button>
-              </div>
-              <div class="crop-region">
-                <Image store={store} imageRef={image} windowRef={window} />
+              <div class="letter-padding">
+                <div class="nav-controls">
+                  <button onClick$={() => { store.gridView = true }}>Back to grid</button>
+                  <button onClick$={() => {
+                    const index = props.files.indexOf(store.file) - 1;
+                    store.file = props.files.at(index % props.files.length)!;
+                  }}>Prev</button>
+                  <button onClick$={() => {
+                    const index = props.files.indexOf(store.file) + 1;
+                    store.file = props.files.at(index % props.files.length)!;
+                  }}>Next</button>
+                </div>
+                <div class="crop-region">
+                  <Image store={store} imageRef={image} windowRef={window} />
+                </div>
               </div>
             </div>
           )}

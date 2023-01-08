@@ -23,7 +23,7 @@
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^0.16.1",
+    "@builder.io/qwik": "^0.16.2",
     "@builder.io/qwik-city": "0.0.124",
     "@graphql-codegen/cli": "2.16.1",
     "@graphql-codegen/client-preset": "1.2.3",

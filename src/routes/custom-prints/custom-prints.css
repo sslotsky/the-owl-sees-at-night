@@ -135,6 +135,10 @@
   height: var(--max-height);
 }
 
+.letter-padding {
+  padding: 1rem;
+}
+
 .crop-region {
   position: relative;
   display: flex;
@@ -159,6 +163,10 @@
 
 .controls {
   padding: 1rem;
+}
+
+.nav-controls {
+  margin-bottom: 0.25rem;
 }
 
 .crop-window {

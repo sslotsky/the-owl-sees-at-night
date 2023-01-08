@@ -1,5 +1,6 @@
-import { component$, Signal, useClientEffect$, useSignal, useStore } from '@builder.io/qwik';
+import { component$, Signal, useClientEffect$, useStore } from '@builder.io/qwik';
 import { MasonryPhoto } from '~/trcp/router';
+import { useImageUrl } from './hooks';
 import { Variant } from './types';
 
 interface Props {
@@ -18,7 +19,8 @@ interface Props {
 }
 
 export default component$((props: Props) => {
-  const url = useSignal<string>(props.store.file.fullSizeBlurUrl)
+  const url = useImageUrl(props.store);
+
   const cropper = useStore({
     imageWidth: 0,
     imageHeight: 0,
@@ -26,15 +28,6 @@ export default component$((props: Props) => {
     initialized: false
   });
 
-  useClientEffect$(async ({ track }) => {
-    track(() => props.store.file)
-    url.value = props.store.file.fullSizeBlurUrl;
-    const image = new Image();
-    image.src = props.store.file.fullSizeUrl;
-    image.decode().then(() => {
-      url.value = image.src;
-    });
-  });
 
   useClientEffect$(async ({ track }) => {
     track(() => props.store.file);
@@ -101,7 +94,9 @@ export default component$((props: Props) => {
         }
       }}
     class="wrapper">
-      <img src={url.value} alt="hello" data-id={props.store.file.fileId} ref={props.imageRef} />
+      {url.value.then((imgUrl) => (
+        <img src={imgUrl} alt="hello" data-id={props.store.file.fileId} ref={props.imageRef} />
+      ))}
       <div 
         onPointerUp$={() => {
           cropper.moving = false;
