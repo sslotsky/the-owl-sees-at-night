@@ -107,7 +107,6 @@
 }
 
 .tab-content .print-size {
-  border: 1px solid black;
   margin: 1rem;
   display: flex;
   align-items: center;
@@ -119,6 +118,18 @@
   width: 100%;
   text-align: center;
   font-size: 0.75rem;
+}
+
+.wood {
+  border: 5px inset burlywood;
+}
+
+.metal {
+  border: 5px inset #757575;
+}
+
+.print-size:hover {
+  filter: brightness(1.5);
 }
 
 .print-size.active {
@@ -182,10 +193,13 @@
 
 .preview {
   display: flex;
+  position: relative;
 }
 
 .preview-overlay {
   position: absolute;
+  top: 5px;
+  left: 5px;
   font-size: 0.6rem;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);

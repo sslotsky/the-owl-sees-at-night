@@ -83,9 +83,10 @@ export default component$((props: Props) => {
   return (
     <>
       <canvas 
-        style={`height: ${props.store.printSizeY * SCALE}px; width: ${props.store.printSizeX * SCALE}px; border: 1px solid black;`} 
+        style={`height: ${props.store.printSizeY * SCALE}px; width: ${props.store.printSizeX * SCALE}px;`} 
         height={props.store.printSizeY * SCALE * 2}
         width={props.store.printSizeX * SCALE * 2}
+        class={props.store.variant.customFields?.material}
         ref={canvas} 
       />
       {props.store.gridView && (

@@ -56,7 +56,7 @@ export const Tabs = (props: { data: CustomPrintQuery, store: { material: string,
         <div class="tab-content">
           {selectedGroup && selectedGroup.map((variant) => (
             <div class="flex-wrapper">
-              <div onClick$={() => props.store.variant = variant} class={`print-size ${variant.id === props.store.variant.id ? 'active' : ''}`} style={`height: ${variant.customFields!.height! * 10}px; width: ${variant.customFields!.width! * 10}px`}>
+              <div onClick$={() => props.store.variant = variant} class={`print-size ${props.store.material} ${variant.id === props.store.variant.id ? 'active' : ''}`} style={`height: ${variant.customFields!.height! * 10}px; width: ${variant.customFields!.width! * 10}px`}>
                 <p>{variant.customFields?.width}x{variant.customFields?.height}</p>
               </div>
             </div>
