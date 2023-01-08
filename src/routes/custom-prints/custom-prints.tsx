@@ -102,9 +102,9 @@ export default component$((props: {
   const window = useSignal<HTMLImageElement>();
 
   return (
-    <div class="custom-prints">
+    <div class="custom-prints hero-hex">
       <div>
-        <div class="scroll-container hero-hex">
+        <div class="scroll-container">
           {store.gridView ? (
             <div class="photo-grid">
               {props.files.map((f) => (
@@ -139,7 +139,7 @@ export default component$((props: {
           )}
         </div>
       </div>
-      <div class="options-selector brick-wall">
+      <div class="options-selector">
         <div class="preview-area">
           <div class="controls">
             <button onClick$={() => {

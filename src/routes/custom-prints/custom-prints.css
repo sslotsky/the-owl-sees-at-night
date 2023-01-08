@@ -12,10 +12,15 @@
   max-height: var(--max-height);
 }
 
+.selector-area {
+  padding-bottom: 1rem;
+}
+
 .photo-grid {
   line-height: 0;
   column-count: 3;
   column-gap: 5px;
+  margin-bottom: 5px;
 }
 
 
@@ -24,6 +29,7 @@
   height: auto;
   transition: all .5s ease-in-out;
   margin-top: 5px;
+  margin-left: 5px;
   border-radius: 2px;
   min-width: 200px;
 }
