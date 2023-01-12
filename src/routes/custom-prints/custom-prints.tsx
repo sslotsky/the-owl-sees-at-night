@@ -165,6 +165,7 @@ export default component$((props: {
               store.printSizeX = store.printSizeY;
               store.printSizeY = oldX;
             }} class="rotate">🔄 Rotate</button>
+            <button disabled={store.gridView}>Add to cart</button>
           </div>
           <div class="preview">
             <Preview store={store} image={image} window={window} />
