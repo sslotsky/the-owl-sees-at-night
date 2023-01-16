@@ -1,29 +1,13 @@
-import { component$, useContext, useStylesScoped$ } from '@builder.io/qwik';
-import { RequestHandler } from '@builder.io/qwik-city';
-import { appRouter, MasonryPhoto } from '~/trcp/router';
+import { component$, useContext, useStyles$ } from '@builder.io/qwik';
 import { ShopContext } from '~/components/shop-context/context';
 import styles from './cart.css?inline';
-
-export function formatPrice(cents: number) {
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  })
-
-  return formatter.format(cents / 100)
-}
-
-export const onGet: RequestHandler<MasonryPhoto> = async ({ params }) => {
-  const caller = appRouter.createCaller({});
-  return caller.getPhoto(params.fileId)
-}
+import CartItem from './cart-item';
 
 export default component$(() => {
-  useStylesScoped$(styles);
+  useStyles$(styles);
   const shopState = useContext(ShopContext);
   const count = shopState.order ? shopState.order.lines.reduce((memo, line) => memo + line.quantity, 0) : 0;
 
-  console.log(shopState.order?.lines)
   return (
     <div class="cart">
       <div class="shopping-bag">
@@ -34,14 +18,7 @@ export default component$(() => {
       </div>
       <div class="side-panel">
         {shopState.order?.lines.length ? shopState.order?.lines.map((line) => (
-          <div class="cart-item">
-            <img src={line.previewUrl} />
-            <div class="product-text">
-              <span>{line.productVariant.name}</span>
-              <span>{line.quantity}x @ {formatPrice(line.productVariant.price)}</span>
-              <span>{formatPrice(line.linePriceWithTax)}</span>
-            </div>
-          </div>
+          <CartItem line={line} />
         )) : (
           <p>No items in cart</p>
         )}
