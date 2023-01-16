@@ -5,7 +5,7 @@ import Image from './image';
 import styles from './custom-prints.css?inline';
 import Preview from './preview';
 import { VariantArray, Variant } from './types';
-
+import { addToOrder } from '~/components/shop-context/context';
 
 export function groupedVariants(data: CustomPrintQuery) {
   if (!data.product) {
@@ -101,7 +101,15 @@ export default component$((props: {
 
   const image = useSignal<HTMLImageElement>();
   const window = useSignal<HTMLImageElement>();
+  
+  const [left, top, width, height] = [
+    store.cropperLeft, store.cropperTop, store.cropperWidth, store.cropperHeight
+  ].map(n => n * (store.file.width / (image.value?.clientWidth || 1)))
 
+  const transform = `tr:w-${width},h-${height},cm-extract,x-${left},y-${top}`;
+
+  const execute$ = addToOrder(store.variant.id, 1, store.file.fileId, transform)
+  
   return (
     <div class="custom-prints hero-hex">
       <div>
@@ -165,7 +173,7 @@ export default component$((props: {
               store.printSizeX = store.printSizeY;
               store.printSizeY = oldX;
             }} class="rotate">🔄 Rotate</button>
-            <button disabled={store.gridView}>Add to cart</button>
+            <button disabled={store.gridView} onClick$={execute$}>Add to cart</button>
           </div>
           <div class="preview">
             <Preview store={store} image={image} window={window} />

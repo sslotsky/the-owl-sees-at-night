@@ -16,15 +16,22 @@ export const activeOrderQuery = gql`
       totalQuantity
       lines {
         id
+        previewUrl
         productVariant {
           id
           name
-        }
-        featuredAsset {
-          id
-          preview
+          price
+          customFields {
+            height
+            width
+            material
+          }
         }
         quantity
+        customFields {
+          fileId
+          transformation
+        }
         linePriceWithTax
       }
     }
@@ -75,7 +82,7 @@ export const ShopProvider = component$(() => {
   )
 })
 
-export function addToOrder(productVariantId: number, quantity: number, fileId: string, transformation: string) {
+export function addToOrder(productVariantId: string, quantity: number, fileId: string, transformation: string) {
   const { exec$, result } = useMutation<AddToOrderMutation>(addItemToOrderMutation);
   const context = useContext(ShopContext);
 
