@@ -1,6 +1,6 @@
 import { $, component$, createContext, useTask$, useStore, Slot, useContextProvider, useContext } from "@builder.io/qwik";
 import { gql } from "graphql-request";
-import { ActiveOrderQuery, AddToOrderMutation } from "~/gql/graphql";
+import { ActiveOrderQuery, AddToOrderMutation, RemoveOrderLineMutation } from "~/gql/graphql";
 import { useQuery, useMutation } from '~/gql/api';
 
 export const activeOrderQuery = gql`
@@ -34,6 +34,14 @@ export const activeOrderQuery = gql`
         }
         linePriceWithTax
       }
+    }
+  }
+`;
+
+export const removeOrderLineMutation = gql`
+  mutation RemoveOrderLine($orderLineId: ID!) {
+    removeOrderLine(orderLineId: $orderLineId) {
+      __typename
     }
   }
 `;
@@ -97,4 +105,18 @@ export function addToOrder(productVariantId: string, quantity: number, fileId: s
     context.fetchCounter++;
     return result;
   });
+}
+
+export function removeOrderLine(orderLineId: string) {
+  const { exec$, result } = useMutation<RemoveOrderLineMutation>(removeOrderLineMutation);
+  const context = useContext(ShopContext);
+
+  return $(async () => {
+    await exec$({
+      orderLineId
+    });
+
+    context.fetchCounter++;
+    return result;
+  })
 }
