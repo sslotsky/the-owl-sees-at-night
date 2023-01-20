@@ -1,6 +1,6 @@
 import { $, component$, createContext, useTask$, useStore, Slot, useContextProvider, useContext } from "@builder.io/qwik";
 import { gql } from "graphql-request";
-import { ActiveOrderQuery, AddToOrderMutation, RemoveOrderLineMutation } from "~/gql/graphql";
+import { ActiveOrderQuery, AddToOrderMutation, AdjustOrderLineMutation, RemoveOrderLineMutation } from "~/gql/graphql";
 import { useQuery, useMutation } from '~/gql/api';
 
 export const activeOrderQuery = gql`
@@ -34,6 +34,14 @@ export const activeOrderQuery = gql`
         }
         linePriceWithTax
       }
+    }
+  }
+`;
+
+export const adjustOrderLineMutation = gql`
+  mutation AdjustOrderLine($orderLineId: ID!, $quantity: Int!, $customFields: OrderLineCustomFieldsInput) {
+    adjustOrderLine(orderLineId: $orderLineId, quantity: $quantity, customFields: $customFields) {
+      __typename
     }
   }
 `;
@@ -115,6 +123,18 @@ export function removeOrderLine(orderLineId: string) {
     await exec$({
       orderLineId
     });
+
+    context.fetchCounter++;
+    return result;
+  })
+}
+
+export function changeQuantity(orderLineId: string, quantity: number) {
+  const { exec$, result } = useMutation<AdjustOrderLineMutation>(adjustOrderLineMutation);
+  const context = useContext(ShopContext);
+
+  return $(async () => {
+    await exec$({ orderLineId, quantity });
 
     context.fetchCounter++;
     return result;

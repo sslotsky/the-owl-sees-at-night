@@ -13,54 +13,18 @@
   --qwik-dark-purple: #713fc2;
   --classic-olive: #75773C;
   --turmeric: #F0CA28;
+  --denim: #1A2930;
 }
 
 body {
-  background-color: var(--classic-olive);
   font-family: 'Hind Siliguri', sans-serif;
-  padding: 20px 20px 40px 20px;
-}
-
-h1,
-h2 {
-  margin: 0 0 5px 0;
-}
-
-.lightning {
-  filter: hue-rotate(180deg);
-}
-
-section {
-  padding: 20px;
-}
-
-ul {
-  list-style-type: square;
-  margin: 5px 0 30px 0;
-  padding-left: 25px;
-}
-
-li {
-  padding: 8px 0;
-}
-
-li::marker {
-  color: var(--qwik-light-blue);
-}
-
-a,
-a:visited {
-  color: var(--qwik-dark-blue);
+  margin: 0;
 }
 
 a:hover {
   text-decoration: none;
 }
 
-main {
-  margin: 0 auto;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0px 0px 130px -50px var(--qwik-light-purple);
-  overflow: hidden;
+.bg-denim {
+  background-color: var(--denim);
 }

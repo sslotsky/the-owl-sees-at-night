@@ -111,22 +111,26 @@ export default component$((props: {
   const execute$ = addToOrder(store.variant.id, 1, store.file.fileId, transform)
   
   return (
-    <div class="custom-prints hero-hex">
+    <div class="custom-prints">
       <div>
-        <div class="scroll-container">
+        <div class="scroll-container bg-denim">
           {store.gridView ? (
-            <div class="photo-grid">
-              {props.files.map((f) => (
-                <img 
-                  onClick$={() => { 
-                    store.file = f; 
-                    store.gridView = false;
-                  }} 
-                  loading="lazy"
-                  src={f.masonryUrl}
-                  alt={f.name}
-                />
-              ))}
+            <div class="grid-wrap">
+              <div class="photo-grid">
+                {props.files.map((f) => (
+                  <div class="image-wrapper">
+                    <img 
+                      onClick$={() => { 
+                        store.file = f; 
+                        store.gridView = false;
+                      }} 
+                      loading="lazy"
+                      src={f.masonryUrl}
+                      alt={f.name}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
             <div class="photo-crop">

@@ -1,3 +1,12 @@
+body {
+  background-color: var(--classic-olive);
+  padding: 20px 20px 40px 20px;
+}
+
+section {
+  padding: 20px;
+}
+
 main {
   margin: 0 auto;
   background-color: white;
