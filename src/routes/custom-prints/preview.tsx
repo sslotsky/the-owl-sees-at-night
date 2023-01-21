@@ -78,7 +78,7 @@ export default component$((props: Props) => {
         }
       })
     } 
-  })
+  }, { eagerness: 'visible' })
 
   return (
     <>

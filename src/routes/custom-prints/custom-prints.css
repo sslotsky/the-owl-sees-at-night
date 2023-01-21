@@ -150,7 +150,6 @@
 
 .crop-region {
   position: relative;
-  display: flex;
 }
 
 .photo-crop .crop-region img {
@@ -239,4 +238,36 @@
 .image-wrapper {
   margin-right: 5px;
   margin-bottom: 5px;
+}
+
+.photo-crop {
+  display: flex;
+}
+
+.photo-crop .nav-controls {
+  display: flex;
+  flex-direction: column;
+  margin-right: 0.5rem;
+  margin-top: 2rem;
+}
+
+.photo-crop .nav-controls button {
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  border-radius: 5px;
+  margin-bottom: 0.25rem;
+  display: flex;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 0.5rem;
+  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+.photo-crop .nav-controls button:hover {
+  box-shadow: 0 0 1rem 1rem red inset;
+}
+
+.photo-crop .nav-controls button svg {
+  width: 1rem;
 }
