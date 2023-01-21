@@ -138,6 +138,9 @@
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
+  background-color: var(--denim);
+  margin: 1rem;
+  border-radius: 5px;
 }
 
 .photo-crop {
@@ -150,6 +153,11 @@
 
 .crop-region {
   position: relative;
+  text-align: center;
+}
+
+.crop-region input[type="range"] {
+  width: 60%;
 }
 
 .photo-crop .crop-region img {
@@ -171,13 +179,10 @@
 
 .controls {
   padding: 1rem;
-  display: flex;
-  flex-direction: column;
 }
 
-.controls label.zoom {
-  display: flex;
-  flex-direction: column;
+.controls .buttons button svg {
+  width: 1rem;
 }
 
 .nav-controls {
@@ -251,7 +256,7 @@
   margin-top: 2rem;
 }
 
-.photo-crop .nav-controls button {
+button.iconic {
   background-color: transparent;
   border: 2px solid white;
   color: white;
@@ -264,10 +269,14 @@
   transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
 }
 
-.photo-crop .nav-controls button:hover {
+.nav-controls button:first-child {
+  margin-bottom: 2rem;
+}
+
+button.iconic:hover {
   box-shadow: 0 0 1rem 1rem red inset;
 }
 
-.photo-crop .nav-controls button svg {
+button.iconic svg {
   width: 1rem;
 }

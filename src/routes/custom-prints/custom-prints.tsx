@@ -135,7 +135,16 @@ export default component$((props: {
           ) : (
             <div class="photo-crop letter-padding">
               <div class="nav-controls">
-                <button onClick$={() => { store.gridView = true }}>
+                <button onClick$={() => {
+                  const oldX = store.printSizeX;
+                  store.printSizeX = store.printSizeY;
+                  store.printSizeY = oldX;
+                }} class="rotate iconic">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                  </svg>
+                </button>
+                <button onClick$={() => { store.gridView = true }} class="iconic">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5" />
                   </svg>
@@ -143,12 +152,12 @@ export default component$((props: {
                 <button onClick$={() => {
                   const index = props.files.indexOf(store.file) - 1;
                   store.file = props.files.at(index % props.files.length)!;
-                }}>
+                }} class="iconic">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953l7.108-4.062A1.125 1.125 0 0121 8.688v8.123zM11.25 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953L9.567 7.71a1.125 1.125 0 011.683.977v8.123z" />
                   </svg>
                 </button>
-                <button onClick$={() => {
+                <button class="iconic" onClick$={() => {
                   const index = props.files.indexOf(store.file) + 1;
                   store.file = props.files.at(index % props.files.length)!;
                 }}>
@@ -158,6 +167,18 @@ export default component$((props: {
                 </button>
               </div>
               <div class="crop-region">
+                <input type="range"
+                  min={1}
+                  max={100}
+                  value={1}
+                  disabled={store.gridView}
+                  onInput$={(_evt, el: HTMLInputElement) => {
+                    const maxZoomFactor = image.value!.naturalWidth / image.value!.clientWidth;
+                    const val = parseInt(el.value, 10);
+                    const scaledValue = (val - 1) / (100 - 1) * (maxZoomFactor - 1) + 1;
+                    store.zoomFactor = scaledValue;
+                  }}
+                />
                 <Image store={store} imageRef={image} windowRef={window} />
               </div>
             </div>
@@ -167,27 +188,13 @@ export default component$((props: {
       <div class="options-selector">
         <div class="preview-area">
           <div class="controls">
-            <label class="zoom">
-              Zoom in
-              <input type="range"
-                min={1}
-                max={100}
-                value={1}
-                disabled={store.gridView}
-                onInput$={(_evt, el: HTMLInputElement) => {
-                  const maxZoomFactor = image.value!.naturalWidth / image.value!.clientWidth;
-                  const val = parseInt(el.value, 10);
-                  const scaledValue = (val - 1) / (100 - 1) * (maxZoomFactor - 1) + 1;
-                  store.zoomFactor = scaledValue;
-                }}
-              />
-            </label>
-            <button onClick$={() => {
-              const oldX = store.printSizeX;
-              store.printSizeX = store.printSizeY;
-              store.printSizeY = oldX;
-            }} class="rotate">🔄 Rotate</button>
-            <button disabled={store.gridView} onClick$={execute$}>Add to cart</button>
+            <div class="buttons">
+              <button class="iconic" disabled={store.gridView} onClick$={execute$}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                </svg>
+              </button>
+            </div>
           </div>
           <div class="preview">
             <Preview store={store} image={image} window={window} />
