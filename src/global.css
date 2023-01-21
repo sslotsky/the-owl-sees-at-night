@@ -23,14 +23,17 @@
   --purp: #4e4369;
   --light-purp: #D8CEF2;
   --light-shades: #faf9f9;
-  --light-accent: #928a98;
+  --light-accent: #98948a;
   --main-brand: #896795;
   --dark-accent: #7b6f83;
   --dark-shades: #221f26;
+  --woody: #896c24;
 }
 
 body {
   font-family: 'Hind Siliguri', sans-serif;
+  background-color: var(--light-shades);
+  color: var(--dark-shades);
   margin: 0;
 }
 

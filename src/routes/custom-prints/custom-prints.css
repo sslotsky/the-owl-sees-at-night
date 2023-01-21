@@ -109,7 +109,6 @@
   display: flex;
   align-items: center;
   background-color: var(--light-shades);
-  color: var(--dark-shades);
   cursor: pointer;
 }
 
@@ -120,7 +119,7 @@
 }
 
 .wood {
-  border: 5px inset burlywood;
+  border: 5px inset var(--woody);
 }
 
 .metal {
@@ -128,11 +127,11 @@
 }
 
 .print-size:hover {
-  filter: brightness(1.5);
+  filter: brightness(1.2);
 }
 
 .print-size.active {
-  filter: brightness(2);
+  filter: brightness(1.5);
 }
 
 .preview-area {
