@@ -113,7 +113,7 @@ export default component$((props: {
   return (
     <div class="custom-prints">
       <div>
-        <div class="scroll-container bg-denim">
+        <div class="scroll-container bg-dark-shades">
           {store.gridView ? (
             <div class="grid-wrap">
               <div class="photo-grid">
@@ -186,7 +186,7 @@ export default component$((props: {
         </div>
       </div>
       <div class="options-selector">
-        <div class="preview-area">
+        <div class="preview-area bg-dark-accent">
           <div class="controls">
             <div class="buttons">
               <button class="iconic" disabled={store.gridView} onClick$={execute$}>

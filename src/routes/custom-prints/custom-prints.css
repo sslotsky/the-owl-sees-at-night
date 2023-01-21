@@ -70,7 +70,7 @@
 }
 
 .tab-bar {
-  background-color: var(--turmeric);
+  background-color: var(--dark-accent);
   display: flex;
 }
 
@@ -94,7 +94,7 @@
 .tab-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  background-color: var(--classic-olive);
+  background-color: var(--dark-shades);
   min-height: 100%;
 }
 
@@ -108,7 +108,8 @@
   margin: 1rem;
   display: flex;
   align-items: center;
-  background-color: lavender;
+  background-color: var(--light-shades);
+  color: var(--dark-shades);
   cursor: pointer;
 }
 
@@ -123,7 +124,7 @@
 }
 
 .metal {
-  border: 5px inset #757575;
+  border: 5px inset var(--light-accent);
 }
 
 .print-size:hover {
@@ -138,7 +139,6 @@
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
-  background-color: var(--denim);
   margin: 1rem;
   border-radius: 5px;
 }
@@ -254,29 +254,4 @@
   flex-direction: column;
   margin-right: 0.5rem;
   margin-top: 2rem;
-}
-
-button.iconic {
-  background-color: transparent;
-  border: 2px solid white;
-  color: white;
-  border-radius: 5px;
-  margin-bottom: 0.25rem;
-  display: flex;
-  cursor: pointer;
-  border-radius: 50%;
-  padding: 0.5rem;
-  transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
-}
-
-.nav-controls button:first-child {
-  margin-bottom: 2rem;
-}
-
-button.iconic:hover {
-  box-shadow: 0 0 1rem 1rem red inset;
-}
-
-button.iconic svg {
-  width: 1rem;
 }
