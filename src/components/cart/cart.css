@@ -5,7 +5,7 @@
   display: flex;
   max-height: 2.5rem;
   z-index: 2;
-  background-color: rgb(186, 186, 203);
+  background-color: var(--light-shades);
 }
 
 .side-panel {
@@ -14,11 +14,12 @@
   white-space: nowrap;
   overflow: hidden;
   transition: 0.5s all ease;
-  background-color: rgb(186, 186, 203);
+  background-color: var(--light-shades);
+  border-bottom: 1px solid var(--main-brand);
+  border-left: 1px solid var(--main-brand);
 }
 
 .cart:hover .side-panel {
-  margin-top: 2.5rem;
   width: 100%;
   height: 100%;
   max-height: calc(100vh - 2.5rem);
@@ -36,6 +37,7 @@
 
 .shopping-bag > svg {
   width: 1.5rem;
+  color: var(--dark-shades);
 }
 
 .shopping-bag {
@@ -43,12 +45,12 @@
   padding: 0.5rem 1rem;
   position: relative;
   width: min-content;
-  background-color: lavender;
+  background-color: var(--main-brand);
 }
 
 span.count {
-  background-color: red;
-  color: white;
+  background-color: var(--red);
+  color: var(--light-shades);
   border-radius: 50%;
   padding: 0 0.5rem;
   display: flex;
@@ -89,7 +91,7 @@ span.count {
 }
 
 .warning {
-  color: red;
+  color: var(--red);
 }
 
 .cart-item-action:hover {
