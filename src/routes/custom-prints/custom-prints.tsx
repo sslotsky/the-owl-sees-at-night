@@ -186,7 +186,7 @@ export default component$((props: {
         </div>
       </div>
       <div class="options-selector">
-        <div class="preview-area bg-dark-accent">
+        <div class="preview-area graph-paper">
           <div class="controls">
             <div class="buttons">
               <button class="iconic" disabled={store.gridView} onClick$={execute$}>

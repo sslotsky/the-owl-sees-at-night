@@ -67,6 +67,7 @@
 
 .tabs {
   height: 100%;
+  padding: 1rem;
 }
 
 .tab-bar {
@@ -81,6 +82,7 @@
   height: 100%;
   padding: 1rem;
   cursor: pointer;
+  color: var(--light-shades);
 }
 
 
