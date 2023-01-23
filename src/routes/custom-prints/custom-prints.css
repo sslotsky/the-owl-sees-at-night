@@ -256,3 +256,7 @@
   margin-right: 0.5rem;
   margin-top: 2rem;
 }
+
+input[type=range] {
+  margin-bottom: 1.5rem;
+}
