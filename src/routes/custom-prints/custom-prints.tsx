@@ -133,7 +133,7 @@ export default component$((props: {
   return (
     <div class="custom-prints">
       <div>
-        <div class="scroll-container bg-dark-shades">
+        <div class="scroll-container bg-dark-shades max-height">
           {store.gridView ? (
             <div class="grid-wrap">
               <div class="photo-grid">

@@ -3,12 +3,14 @@
   grid-template-columns: 1fr 1fr;
   width: 100%;
   --max-height: 1000px;
+  max-height: var(--max-height);
 }
 
 .options-selector {
   display: grid;
   grid-template-rows: 1fr 1fr;
   padding: 0 1rem;
+  height: min-content;
   max-height: var(--max-height);
 }
 
@@ -56,17 +58,15 @@
   overflow-y: auto;
 }
 
-.scroll-container:has(.photo-grid) {
-  height: var(--max-height);
-}
-
-.scroll-container:has(.tab-content) {
-  height: 100%;
+.tabs .scroll-container {
   max-height: calc(var(--max-height) / 2 - 3rem);
 }
 
+.max-height {
+  max-height: var(--max-height);
+}
+
 .tabs {
-  height: 100%;
   padding: 1rem;
 }
 
@@ -97,7 +97,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   background-color: var(--dark-shades);
-  min-height: 100%;
 }
 
 .tab-content .flex-wrapper {
@@ -142,6 +141,7 @@
   margin-bottom: 1rem;
   margin: 1rem;
   border-radius: 5px;
+  height: 450px;
 }
 
 .photo-crop {
