@@ -1,4 +1,4 @@
-import { component$, Signal, useClientEffect$, useStore, useTask$ } from '@builder.io/qwik';
+import { component$, Signal, useClientEffect$, useStore } from '@builder.io/qwik';
 import { MasonryPhoto } from '~/trcp/router';
 import { useImageUrl } from './hooks';
 import { Variant } from './types';
@@ -30,14 +30,6 @@ export default component$((props: Props) => {
     initialized: false
   });
 
-
-  useTask$(async ({ track }) => {
-    track(() => props.store.gridView);
-
-    if (!props.store.gridView) {
-      props.store.zoomFactor = 1;
-    }
-  })
 
   useClientEffect$(async ({ track }) => {
     track(() => props.store.file);
