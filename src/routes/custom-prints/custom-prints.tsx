@@ -78,6 +78,7 @@ export default component$((props: {
   }
 
   const prints = sortedPrints(props.productData.product!.variants!);
+  const slide = useSignal(1);
   const store = useStore({
     variant: prints[0],
     file: props.files[0],
@@ -100,6 +101,25 @@ export default component$((props: {
   })
 
   const image = useSignal<HTMLImageElement>();
+
+  useTask$(({ track }) => {
+    track(() => slide.value);
+
+    if (image.value) {
+      const maxZoomFactor = image.value.naturalWidth / image.value.clientWidth;
+      store.zoomFactor = (slide.value - 1) / (100 - 1) * (maxZoomFactor - 1) + 1;
+    }
+  });
+
+  useTask$(async ({ track }) => {
+    track(() => store.gridView);
+
+    if (!store.gridView) {
+      store.zoomFactor = 1;
+      slide.value = 1;
+    }
+  })
+
   const window = useSignal<HTMLImageElement>();
   
   const [left, top, width, height] = [
@@ -170,13 +190,10 @@ export default component$((props: {
                 <input type="range"
                   min={1}
                   max={100}
-                  value={1}
+                  value={slide.value}
                   disabled={store.gridView}
                   onInput$={(_evt, el: HTMLInputElement) => {
-                    const maxZoomFactor = image.value!.naturalWidth / image.value!.clientWidth;
-                    const val = parseInt(el.value, 10);
-                    const scaledValue = (val - 1) / (100 - 1) * (maxZoomFactor - 1) + 1;
-                    store.zoomFactor = scaledValue;
+                    slide.value = parseInt(el.value, 10);
                   }}
                 />
                 <Image store={store} imageRef={image} windowRef={window} />
