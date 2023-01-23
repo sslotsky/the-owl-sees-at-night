@@ -63,13 +63,18 @@ span.count {
 }
 
 .cart-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: min-content 1fr;
   margin-bottom: 0.5rem;
+}
+
+.cart-item:not(:last-child) {
+  border-bottom: 1px solid var(--main-brand);
 }
 
 .product-text {
   font-size: 0.75rem;
-  padding: 0.75rem;
+  margin-left: 0.75rem;
 }
 
 .product-text span {
