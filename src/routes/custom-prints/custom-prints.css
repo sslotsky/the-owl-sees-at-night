@@ -127,6 +127,10 @@
   border: 5px inset var(--light-accent);
 }
 
+.canvas {
+  border: 5px inset transparent;
+}
+
 .print-size:hover {
   filter: brightness(1.2);
 }
