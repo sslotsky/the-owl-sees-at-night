@@ -35,6 +35,8 @@ module.exports = {
     'prefer-spread': 'off',
     'no-case-declarations': 'off',
     'no-console': 'off',
-    '@typescript-eslint/no-unused-vars': ['error'],
+    '@typescript-eslint/no-unused-vars': ['error', {
+      "argsIgnorePattern": "^_"
+    }],
   },
 };
