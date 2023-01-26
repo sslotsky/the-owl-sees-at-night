@@ -58,7 +58,6 @@
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
     "imagekit": "^4.1.1",
-    "qwikql": "^0.0.2",
     "zod": "^3.19.1"
   }
 }
