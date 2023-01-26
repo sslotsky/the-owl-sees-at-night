@@ -22,7 +22,7 @@ export const onGet: RequestHandler<PageData> = async () => {
 
 export const customPrintQuery = gql`
   query CustomPrint {
-    product(slug: "custom-print") {
+    product(slug: "custom-print-3") {
       id
       name
       slug
