@@ -111,15 +111,6 @@ export default component$((props: {
     }
   });
 
-  useTask$(async ({ track }) => {
-    track(() => store.gridView);
-
-    if (!store.gridView) {
-      store.zoomFactor = 1;
-      slide.value = 1;
-    }
-  })
-
   const window = useSignal<HTMLImageElement>();
   
   const [left, top, width, height] = [
