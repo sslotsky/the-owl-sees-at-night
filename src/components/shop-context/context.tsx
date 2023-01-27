@@ -102,7 +102,7 @@ export function addToOrder(productVariantId: string, quantity: number, fileId: s
   const { exec$, result } = useMutation<AddToOrderMutation>(addItemToOrderMutation);
   const context = useContext(ShopContext);
 
-  return $(async () => {
+  const execute$ = $(async () => {
     await exec$({
       productVariantId,
       quantity,
@@ -113,6 +113,8 @@ export function addToOrder(productVariantId: string, quantity: number, fileId: s
     context.fetchCounter++;
     return result;
   });
+
+  return { execute$, result }
 }
 
 export function removeOrderLine(orderLineId: string) {

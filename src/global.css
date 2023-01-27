@@ -42,30 +42,6 @@ a:hover {
   text-decoration: none;
 }
 
-.bg-denim {
-  background-color: var(--denim);
-}
-
-.bg-purp {
-  background-color: var(--purp);
-}
-
-.bg-light-purp {
-  background-color: var(--light-purp);
-}
-
-.bg-beige {
-  background-color: var(--beige);
-}
-
-.bg-cream {
-  background-color: var(--cream);
-}
-
-.bg-khaki {
-  background-color: var(--khaki);
-}
-
 .bg-dark-shades {
   background-color: var(--dark-shades);
 }
@@ -91,12 +67,17 @@ button.iconic {
   transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
 }
 
-.nav-controls button:first-child {
-  margin-bottom: 2rem;
+button.iconic:hover:not(:disabled) {
+  box-shadow: 0 0 1rem 1rem var(--main-brand) inset;
 }
 
-button.iconic:hover {
-  box-shadow: 0 0 1rem 1rem var(--main-brand) inset;
+button.iconic[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nav-controls button:first-child {
+  margin-bottom: 2rem;
 }
 
 button.iconic svg {

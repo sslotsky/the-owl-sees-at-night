@@ -18,7 +18,7 @@ export default component$(() => {
       </div>
       <div class="side-panel">
         {shopState.order?.lines.length ? shopState.order?.lines.map((line) => (
-          <CartItem line={line} />
+          <CartItem key={line.id} line={line} />
         )) : (
           <p>No items in cart</p>
         )}
