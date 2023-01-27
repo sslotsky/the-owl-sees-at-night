@@ -68,10 +68,6 @@ span.count {
   margin-bottom: 0.5rem;
 }
 
-.cart-item:not(:first-child) {
-  border-top: 1px solid var(--main-brand);
-}
-
 .product-text {
   font-size: 0.75rem;
   margin-left: 0.75rem;
