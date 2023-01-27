@@ -128,7 +128,7 @@
 }
 
 .canvas {
-  border: 5px inset transparent;
+  border: 5px inset var(--light-shades);
 }
 
 .print-size:hover {
