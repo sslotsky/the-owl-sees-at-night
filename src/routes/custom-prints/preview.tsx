@@ -47,11 +47,15 @@ export default component$((props: Props) => {
           const maxX = image.naturalWidth / props.store.printSizeX;
           const maxY = image.naturalHeight / props.store.printSizeY;
           const scale = Math.min(maxX, maxY);
+          const [width, height] = [props.store.printSizeX * scale, props.store.printSizeY * scale];
+          const sx = (image.naturalWidth - width) / 2;
+          const sy = (image.naturalHeight - height) / 2;
+
           ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
           ctx.drawImage(
             image,
-            0, 0,
-            props.store.printSizeX * scale, props.store.printSizeY * scale,
+            sx, sy,
+            width, height,
             0, 0,
             canvas.value.width, canvas.value.height
           )
