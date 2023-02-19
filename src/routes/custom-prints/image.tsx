@@ -1,5 +1,6 @@
 import { component$, Signal, useClientEffect$, useStore } from '@builder.io/qwik';
 import { MasonryPhoto } from '~/trcp/router';
+import DragTracker from './drag-tracker';
 import { useImageUrl } from './hooks';
 import { Variant } from './types';
 
@@ -77,30 +78,33 @@ export default component$((props: Props) => {
   const clipPath = `clip-path: inset(${offsetTop}px ${offsetRight}px ${offsetBottom}px ${offsetLeft}px)`;
 
   return (
-    <div 
-      onPointerMove$={(e) => {
-        if (cropper.moving) {
-          props.store.cropperLeft = Math.max(
-            0,
-            Math.min(
-              props.store.cropperLeft + e.movementX,
-              (props.imageRef.value?.clientWidth || 0) - props.store.cropperWidth
-            )
+    <DragTracker
+      class="wrapper"
+      tracking={cropper.moving}
+      callback$={(movement) => {
+        props.store.cropperLeft = Math.max(
+          0,
+          Math.min(
+            props.store.cropperLeft + movement.changeX,
+            (props.imageRef.value?.clientWidth || 0) - props.store.cropperWidth
           )
-          props.store.cropperTop = Math.max(
-            0,
-            Math.min(
-              props.store.cropperTop + e.movementY,
-              (props.imageRef.value?.clientHeight || 0) - props.store.cropperHeight
-            )
+        )
+        props.store.cropperTop = Math.max(
+          0,
+          Math.min(
+            props.store.cropperTop + movement.changeY,
+            (props.imageRef.value?.clientHeight || 0) - props.store.cropperHeight
           )
-        }
+        )
       }}
-    class="wrapper">
+    >
       {url.value.then((imgUrl) => (
         <img src={imgUrl} alt="hello" data-id={props.store.file.fileId} ref={props.imageRef} />
       ))}
       <div 
+        onTouchEnd$={() => {
+          cropper.moving = false;
+        }}
         onPointerUp$={() => {
           cropper.moving = false;
         }}
@@ -110,6 +114,9 @@ export default component$((props: Props) => {
           class="crop-window"
           style={clipPath} 
           preventdefault:pointerdown
+          onTouchStart$={() => {
+            cropper.moving = true;
+          }}
           onPointerDown$={() => {
             cropper.moving = true;
           }}
@@ -118,7 +125,7 @@ export default component$((props: Props) => {
           ref={props.windowRef}
         />
       </div>
-    </div>
+    </DragTracker>
   )
 });
 

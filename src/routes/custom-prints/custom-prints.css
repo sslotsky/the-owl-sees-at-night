@@ -195,6 +195,7 @@
 .preview {
   display: flex;
   position: relative;
+  margin-right: 1rem;
 }
 
 .preview-overlay {
