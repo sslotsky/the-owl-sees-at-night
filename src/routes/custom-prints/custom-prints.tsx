@@ -170,6 +170,7 @@ export default component$(
                         loading="lazy"
                         src={f.masonryUrl}
                         alt={f.name}
+                        style={`aspect-ratio: ${f.width}/${f.height}`}
                       />
                     </div>
                   ))}
