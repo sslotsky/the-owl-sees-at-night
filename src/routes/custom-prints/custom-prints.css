@@ -31,6 +31,7 @@
   transition: all 0.5s ease-in-out;
   border-radius: 2px;
   min-width: 200px;
+  max-width: 300px;
 }
 
 .photo-grid img:hover {
@@ -41,9 +42,17 @@
   cursor: pointer;
 }
 
+.photo-crop {
+  height: var(--max-height);
+}
+
 @media (max-width: 1200px) {
-  .photo-grid {
-    column-count: 2;
+  .custom-prints {
+    grid-template-columns: unset;
+  }
+
+  .photo-crop {
+    height: min-content;
   }
 }
 
@@ -140,10 +149,6 @@
   height: 450px;
 }
 
-.photo-crop {
-  height: var(--max-height);
-}
-
 .letter-padding {
   padding: 1rem;
 }
@@ -236,6 +241,7 @@
 .grid-wrap {
   padding-left: 5px;
   padding-top: 5px;
+  max-width: max-content;
 }
 
 .image-wrapper {
