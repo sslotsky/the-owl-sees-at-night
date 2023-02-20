@@ -1,9 +1,14 @@
-export type Material = 'Wrapped Canvas' | 'Framed Canvas' | 'Poster' | 'Metal' | 'Wood';
+export type Material =
+  | "Wrapped Canvas"
+  | "Framed Canvas"
+  | "Poster"
+  | "Metal"
+  | "Wood";
 
 interface Print {
-  width: number,
-  height: number,
-  material: Material
+  width: number;
+  height: number;
+  material: Material;
 }
 
 function printSizes(material: Material) {
@@ -14,18 +19,18 @@ function printSizes(material: Material) {
       entries.push({
         material,
         width,
-        height
+        height,
       });
 
       return sizes;
     },
-    list: () => entries
+    list: () => entries,
   };
 
   return sizes;
 }
 
-const wood = () => printSizes('Wood');
+const wood = () => printSizes("Wood");
 
 export const woodPrints = wood()
   .add(5, 7)

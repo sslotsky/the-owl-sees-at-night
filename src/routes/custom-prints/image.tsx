@@ -1,8 +1,13 @@
-import { component$, Signal, useClientEffect$, useStore } from '@builder.io/qwik';
-import { MasonryPhoto } from '~/trcp/router';
-import DragTracker from './drag-tracker';
-import { useImageUrl } from './hooks';
-import { Variant } from './types';
+import {
+  component$,
+  Signal,
+  useClientEffect$,
+  useStore,
+} from "@builder.io/qwik";
+import { MasonryPhoto } from "~/trcp/router";
+import DragTracker from "./drag-tracker";
+import { useImageUrl } from "./hooks";
+import { Variant } from "./types";
 
 interface Props {
   store: {
@@ -16,9 +21,9 @@ interface Props {
     printSizeY: number;
     zoomFactor: number;
     gridView: boolean;
-  },
-  imageRef: Signal<HTMLImageElement | undefined>
-  windowRef: Signal<HTMLImageElement | undefined>
+  };
+  imageRef: Signal<HTMLImageElement | undefined>;
+  windowRef: Signal<HTMLImageElement | undefined>;
 }
 
 export default component$((props: Props) => {
@@ -28,9 +33,8 @@ export default component$((props: Props) => {
     imageWidth: 0,
     imageHeight: 0,
     moving: false,
-    initialized: false
+    initialized: false,
   });
-
 
   useClientEffect$(async ({ track }) => {
     track(() => props.store.file);
@@ -39,32 +43,51 @@ export default component$((props: Props) => {
     track(() => props.store.zoomFactor);
     if (props.windowRef.value) {
       const img = props.windowRef.value;
-      img.decode().then(() => {
-        const maxX = img.clientWidth / props.store.printSizeX;
-        const maxY = img.clientHeight / props.store.printSizeY;
-        const scale = Math.min(maxX, maxY);
-        props.store.cropperWidth = props.store.printSizeX * scale / props.store.zoomFactor;
-        props.store.cropperHeight = props.store.printSizeY * scale / props.store.zoomFactor;
-        cropper.imageWidth = img.clientWidth;
-        cropper.imageHeight = img.clientHeight;
+      img
+        .decode()
+        .then(() => {
+          const maxX = img.clientWidth / props.store.printSizeX;
+          const maxY = img.clientHeight / props.store.printSizeY;
+          const scale = Math.min(maxX, maxY);
+          props.store.cropperWidth =
+            (props.store.printSizeX * scale) / props.store.zoomFactor;
+          props.store.cropperHeight =
+            (props.store.printSizeY * scale) / props.store.zoomFactor;
+          cropper.imageWidth = img.clientWidth;
+          cropper.imageHeight = img.clientHeight;
 
-        if (cropper.initialized) {
-          if ((props.store.cropperTop + props.store.cropperHeight) > img.clientHeight) {
-            props.store.cropperTop -= props.store.cropperTop + props.store.cropperHeight - img.clientHeight;
-          } 
+          if (cropper.initialized) {
+            if (
+              props.store.cropperTop + props.store.cropperHeight >
+              img.clientHeight
+            ) {
+              props.store.cropperTop -=
+                props.store.cropperTop +
+                props.store.cropperHeight -
+                img.clientHeight;
+            }
 
-          if ((props.store.cropperLeft + props.store.cropperWidth) > img.clientWidth) {
-            props.store.cropperLeft -= props.store.cropperLeft + props.store.cropperWidth - img.clientWidth;
+            if (
+              props.store.cropperLeft + props.store.cropperWidth >
+              img.clientWidth
+            ) {
+              props.store.cropperLeft -=
+                props.store.cropperLeft +
+                props.store.cropperWidth -
+                img.clientWidth;
+            }
+          } else {
+            cropper.initialized = true;
+            props.store.cropperLeft =
+              (img.clientWidth - props.store.cropperWidth) / 2;
+            props.store.cropperTop =
+              (img.clientHeight - props.store.cropperHeight) / 2;
           }
-        } else {
-          cropper.initialized = true;
-          props.store.cropperLeft = (img.clientWidth - props.store.cropperWidth) / 2; 
-          props.store.cropperTop = (img.clientHeight - props.store.cropperHeight) / 2;
-        }
-      }).catch(
+        })
+        .catch
         // This happens if the user is quickly changing their photo selection.
         // It's not really an error and creates no negative side effects.
-      );
+        ();
     }
   });
 
@@ -72,8 +95,8 @@ export default component$((props: Props) => {
     props.store.cropperLeft,
     props.store.cropperTop,
     cropper.imageWidth - (props.store.cropperLeft + props.store.cropperWidth),
-    cropper.imageHeight - (props.store.cropperTop + props.store.cropperHeight)
-  ]
+    cropper.imageHeight - (props.store.cropperTop + props.store.cropperHeight),
+  ];
 
   const clipPath = `clip-path: inset(${offsetTop}px ${offsetRight}px ${offsetBottom}px ${offsetLeft}px)`;
 
@@ -88,20 +111,26 @@ export default component$((props: Props) => {
             props.store.cropperLeft + movement.changeX,
             (props.imageRef.value?.clientWidth || 0) - props.store.cropperWidth
           )
-        )
+        );
         props.store.cropperTop = Math.max(
           0,
           Math.min(
             props.store.cropperTop + movement.changeY,
-            (props.imageRef.value?.clientHeight || 0) - props.store.cropperHeight
+            (props.imageRef.value?.clientHeight || 0) -
+              props.store.cropperHeight
           )
-        )
+        );
       }}
     >
       {url.value.then((imgUrl) => (
-        <img src={imgUrl} alt="hello" data-id={props.store.file.fileId} ref={props.imageRef} />
+        <img
+          src={imgUrl}
+          alt="hello"
+          data-id={props.store.file.fileId}
+          ref={props.imageRef}
+        />
       ))}
-      <div 
+      <div
         onTouchEnd$={() => {
           cropper.moving = false;
         }}
@@ -110,9 +139,9 @@ export default component$((props: Props) => {
         }}
         class="overlay"
       >
-        <img 
+        <img
           class="crop-window"
-          style={clipPath} 
+          style={clipPath}
           preventdefault:pointerdown
           onTouchStart$={() => {
             cropper.moving = true;
@@ -120,12 +149,11 @@ export default component$((props: Props) => {
           onPointerDown$={() => {
             cropper.moving = true;
           }}
-          src={props.store.file.fullSizeUrl} 
-          data-id={props.store.file.fileId} 
+          src={props.store.file.fullSizeUrl}
+          data-id={props.store.file.fileId}
           ref={props.windowRef}
         />
       </div>
     </DragTracker>
-  )
+  );
 });
-

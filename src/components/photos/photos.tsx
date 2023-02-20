@@ -1,8 +1,8 @@
-import {component$, useStylesScoped$ } from '@builder.io/qwik';
-import { useLocation } from '@builder.io/qwik-city';
-import { MasonryPhoto } from '~/trcp/router';
-import Image from '~/components/image/image';
-import styles from './photos.css?inline';
+import { component$, useStylesScoped$ } from "@builder.io/qwik";
+import { useLocation } from "@builder.io/qwik-city";
+import { MasonryPhoto } from "~/trcp/router";
+import Image from "~/components/image/image";
+import styles from "./photos.css?inline";
 
 interface Props {
   files: MasonryPhoto[];
@@ -16,7 +16,11 @@ export default component$((props: Props) => {
   const viewing = parseInt(loc.query[indexParam], 10);
   const isViewing = !isNaN(viewing);
 
-  const [prevUrl, nextUrl, gridUrl] = [new URL(loc.href), new URL(loc.href), new URL(loc.href)];
+  const [prevUrl, nextUrl, gridUrl] = [
+    new URL(loc.href),
+    new URL(loc.href),
+    new URL(loc.href),
+  ];
   prevUrl.searchParams.set(indexParam, `${viewing - 1}`);
   nextUrl.searchParams.set(indexParam, `${viewing + 1}`);
   gridUrl.searchParams.delete(indexParam);
@@ -25,16 +29,22 @@ export default component$((props: Props) => {
     const url = new URL(loc.href);
     url.searchParams.set(indexParam, n.toString());
     return url.toString();
-  }
+  };
 
   return (
     <div>
       {isViewing ? (
         <div class="full">
           <Image photo={files.at(viewing % files.length)!} />
-          <a class="prev" href={prevUrl.toString()}>&lsaquo;</a>
-          <a class="close" href={gridUrl.toString()}>x</a>
-          <a class="next" href={nextUrl.toString()}>&rsaquo;</a>
+          <a class="prev" href={prevUrl.toString()}>
+            &lsaquo;
+          </a>
+          <a class="close" href={gridUrl.toString()}>
+            x
+          </a>
+          <a class="next" href={nextUrl.toString()}>
+            &rsaquo;
+          </a>
         </div>
       ) : (
         <div id="photos" data-viewing={isViewing}>
@@ -46,5 +56,5 @@ export default component$((props: Props) => {
         </div>
       )}
     </div>
-  )
+  );
 });

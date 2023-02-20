@@ -1,4 +1,11 @@
-import { component$, HTMLAttributes, QRL, Slot, useSignal, useTask$ } from '@builder.io/qwik';
+import {
+  component$,
+  HTMLAttributes,
+  QRL,
+  Slot,
+  useSignal,
+  useTask$,
+} from "@builder.io/qwik";
 
 interface Movement {
   changeX: number;
@@ -15,12 +22,12 @@ export default component$((props: Props) => {
   const lastTouch = useSignal<[number, number]>();
 
   useTask$(({ track }) => {
-    track(() => tracking)
+    track(() => tracking);
 
     if (!tracking) {
       lastTouch.value = undefined;
     }
-  })
+  });
 
   return (
     <div
@@ -42,12 +49,12 @@ export default component$((props: Props) => {
         if (tracking) {
           callback$({
             changeX: e.movementX,
-            changeY: e.movementY
+            changeY: e.movementY,
           });
         }
       }}
     >
       <Slot />
     </div>
-  )
+  );
 });

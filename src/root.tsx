@@ -1,11 +1,15 @@
-import { component$, useStyles$ } from '@builder.io/qwik';
-import { QwikCityProvider, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
-import { RouterHead } from './components/router-head/router-head';
+import { component$, useStyles$ } from "@builder.io/qwik";
+import {
+  QwikCityProvider,
+  RouterOutlet,
+  ServiceWorkerRegister,
+} from "@builder.io/qwik-city";
+import { RouterHead } from "./components/router-head/router-head";
 
-import globalStyles from './global.css?inline';
-import { ShopProvider } from './components/shop-context/context';
-import Cart from './components/cart/cart';
-import { cache } from '~/gql/api'
+import globalStyles from "./global.css?inline";
+import { ShopProvider } from "./components/shop-context/context";
+import Cart from "./components/cart/cart";
+import { cache } from "~/gql/api";
 
 export default component$(() => {
   /**
@@ -23,7 +27,10 @@ export default component$(() => {
         <head>
           <meta charSet="utf-8" />
           <link rel="manifest" href="/manifest.json" />
-          <link href="https://fonts.googleapis.com/css2?family=Hind+Guntur&family=Hind+Siliguri&family=Mako&display=swap" rel="stylesheet" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Hind+Guntur&family=Hind+Siliguri&family=Mako&display=swap"
+            rel="stylesheet"
+          />
           <RouterHead />
         </head>
         <body lang="en">

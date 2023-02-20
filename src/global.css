@@ -11,17 +11,17 @@
   --qwik-light-blue: #18b6f6;
   --qwik-light-purple: #ac7ff4;
   --qwik-dark-purple: #713fc2;
-  --classic-olive: #75773C;
-  --turmeric: #F0CA28;
-  --denim: #1A2930;
-  --marigold: #F7CE3E;
+  --classic-olive: #75773c;
+  --turmeric: #f0ca28;
+  --denim: #1a2930;
+  --marigold: #f7ce3e;
   --forest: #015249;
   --apricot: #f7882f;
-  --khaki: #A6A27C;
-  --cream: #FFFEF2;
-  --beige: #F3F0CE;
+  --khaki: #a6a27c;
+  --cream: #fffef2;
+  --beige: #f3f0ce;
   --purp: #4e4369;
-  --light-purp: #D8CEF2;
+  --light-purp: #d8cef2;
   --light-shades: #faf9f9;
   --light-accent: #98948a;
   --main-brand: #896795;
@@ -32,7 +32,7 @@
 }
 
 body {
-  font-family: 'Hind Siliguri', sans-serif;
+  font-family: "Hind Siliguri", sans-serif;
   background-color: var(--light-shades);
   color: var(--dark-shades);
   margin: 0;
@@ -93,15 +93,15 @@ button.iconic svg {
 /*Range Reset*/
 input[type="range"] {
   -webkit-appearance: none;
-   appearance: none;
-   background: transparent;
-   cursor: pointer;
-   width: 15rem;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 15rem;
 }
 
 /* Removes default focus */
 input[type="range"]:focus {
- outline: none;
+  outline: none;
 }
 
 /***** Chrome, Safari, Opera and Edge Chromium styles *****/
@@ -109,12 +109,12 @@ input[type="range"]:focus {
 input[type="range"]::-webkit-slider-runnable-track {
   background-color: var(--light-shades);
   border-radius: 0.5rem;
-  height: 0.5rem;  
+  height: 0.5rem;
 }
 
 /* slider thumb */
 input[type="range"]::-webkit-slider-thumb {
- -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none; /* Override default look */
   appearance: none;
   margin-top: -0.5rem; /* Centers thumb on the track */
 
@@ -125,7 +125,7 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 25%;
 }
 
-input[type="range"]:focus::-webkit-slider-thumb {   
+input[type="range"]:focus::-webkit-slider-thumb {
   filter: brightness(1.2);
 }
 

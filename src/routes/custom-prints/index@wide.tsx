@@ -1,11 +1,15 @@
-import { Resource, component$, useStylesScoped$ } from '@builder.io/qwik';
-import { DocumentHead, RequestHandler, useEndpoint } from '@builder.io/qwik-city';
-import { gql } from 'graphql-request';
-import { CustomPrintQuery } from '~/gql/graphql';
-import { appRouter, MasonryPhoto } from '~/trcp/router';
-import CustomPrints from './custom-prints';
-import styles from './custom-prints.css?inline';
-import { request as gqlRequest } from '~/gql/api';
+import { Resource, component$, useStylesScoped$ } from "@builder.io/qwik";
+import {
+  DocumentHead,
+  RequestHandler,
+  useEndpoint,
+} from "@builder.io/qwik-city";
+import { gql } from "graphql-request";
+import { CustomPrintQuery } from "~/gql/graphql";
+import { appRouter, MasonryPhoto } from "~/trcp/router";
+import CustomPrints from "./custom-prints";
+import styles from "./custom-prints.css?inline";
+import { request as gqlRequest } from "~/gql/api";
 
 interface PageData {
   files: MasonryPhoto[];
@@ -14,11 +18,13 @@ interface PageData {
 
 export const onGet: RequestHandler<PageData> = async () => {
   const caller = appRouter.createCaller({});
-  const productDataResponse = await gqlRequest<CustomPrintQuery>(customPrintQuery);
+  const productDataResponse = await gqlRequest<CustomPrintQuery>(
+    customPrintQuery
+  );
   const productData = productDataResponse.data;
   const files = await caller.searchPhotos();
-  return { productData, files }
-}
+  return { productData, files };
+};
 
 export const customPrintQuery = gql`
   query CustomPrint {
@@ -36,15 +42,14 @@ export const customPrintQuery = gql`
           material
         }
       }
-
     }
   }
-`
+`;
 
 export default component$(() => {
   useStylesScoped$(styles);
   const data = useEndpoint<PageData>();
-  
+
   return (
     <Resource
       value={data}
@@ -54,17 +59,15 @@ export default component$(() => {
         <CustomPrints files={files} productData={productData} />
       )}
     />
-  )
+  );
 });
 
-
 export const head: DocumentHead = {
-  title: 'Custom Prints',
+  title: "Custom Prints",
   meta: [
     {
-      name: 'description',
-      content: 'Design your own custom prints',
+      name: "description",
+      content: "Design your own custom prints",
     },
   ],
 };
-
