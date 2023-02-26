@@ -15,8 +15,6 @@
   overflow: hidden;
   transition: 0.5s all ease;
   background-color: var(--light-shades);
-  border-bottom: 1px solid var(--main-brand);
-  border-left: 1px solid var(--main-brand);
 }
 
 .cart:hover .side-panel {
@@ -25,6 +23,9 @@
   max-height: calc(100vh - 2.5rem);
   overflow: auto;
   padding: 1rem;
+  border-bottom: 2px solid var(--main-brand);
+  border-left: 2px solid var(--main-brand); 
+  box-shadow: 0 1px 3px var(--dark-accent);
 }
 
 .cart .cart-item img {
@@ -46,6 +47,11 @@
   position: relative;
   width: min-content;
   background-color: var(--main-brand);
+  box-shadow: 0 1px 3px var(--dark-accent);
+}
+
+.cart-actions {
+  display: flex;
 }
 
 span.count {
@@ -71,6 +77,10 @@ span.count {
 .product-text {
   font-size: 0.75rem;
   margin-left: 0.75rem;
+}
+
+.cart-item-actions {
+  line-height: 2.5rem;
 }
 
 .product-text span {

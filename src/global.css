@@ -38,7 +38,7 @@ body {
   margin: 0;
 }
 
-a:hover {
+a {
   text-decoration: none;
 }
 
@@ -150,4 +150,19 @@ input[type="range"]::-moz-range-thumb {
 
 input[type="range"]:focus::-moz-range-thumb {
   filter: brightness(1.2);
+}
+
+.cta {
+  border: 2px solid var(--dark-accent);
+  border-radius: 3px;
+  box-shadow: 0 1px 3px var(--dark-shades);
+  background-color: var(--main-brand);
+  color: var(--light-shades);
+  font-size: 1.25rem;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.cta:hover {
+  filter: brightness(1.25);
 }

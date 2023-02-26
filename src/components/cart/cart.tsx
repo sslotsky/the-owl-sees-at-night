@@ -29,9 +29,14 @@ export default component$(() => {
       </div>
       <div class="side-panel">
         {shopState.order?.lines.length ? (
-          shopState.order?.lines.map((line) => (
-            <CartItem key={line.id} line={line} />
-          ))
+          <div>
+            {shopState.order?.lines.map((line) => (
+              <CartItem key={line.id} line={line} />
+            ))}
+            <div class="cart-actions">
+              <a href="/checkout" class="cta">Checkout</a>
+            </div>
+          </div>
         ) : (
           <p>No items in cart</p>
         )}

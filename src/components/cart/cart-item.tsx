@@ -35,7 +35,7 @@ export default component$((props: { line: OrderLine }) => {
           {line.quantity}x @ {formatPrice(line.productVariant.price)}
         </span>
         <span>{formatPrice(line.linePriceWithTax)}</span>
-        <div>
+        <div class="cart-item-actions">
           <button
             class="cart-item-action warning"
             disabled={loading.value}
