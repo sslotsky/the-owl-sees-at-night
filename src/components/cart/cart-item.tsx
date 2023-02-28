@@ -2,15 +2,7 @@ import { component$, useSignal, $ } from "@builder.io/qwik";
 import { ActiveOrderQuery } from "~/gql/graphql";
 import { removeOrderLine, changeQuantity } from "../shop-context/context";
 import { Unarray } from "~/routes/custom-prints/types";
-
-export function formatPrice(cents: number) {
-  const formatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-
-  return formatter.format(cents / 100);
-}
+import { formatPrice } from "~/utils/format";
 
 type OrderLine = Unarray<NonNullable<ActiveOrderQuery["activeOrder"]>["lines"]>;
 

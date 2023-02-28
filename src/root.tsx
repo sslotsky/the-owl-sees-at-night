@@ -8,7 +8,6 @@ import { RouterHead } from "./components/router-head/router-head";
 
 import globalStyles from "./global.css?inline";
 import { ShopProvider } from "./components/shop-context/context";
-import Cart from "./components/cart/cart";
 import { cache } from "~/gql/api";
 
 export default component$(() => {
@@ -34,7 +33,6 @@ export default component$(() => {
           <RouterHead />
         </head>
         <body lang="en">
-          <Cart />
           <RouterOutlet />
           <ServiceWorkerRegister />
         </body>

@@ -1,7 +1,7 @@
 import {
   $,
   component$,
-  createContext,
+  createContextId,
   useTask$,
   useStore,
   Slot,
@@ -11,11 +11,38 @@ import {
 import { gql } from "graphql-request";
 import {
   ActiveOrderQuery,
+  ActiveCustomerQuery,
   AddToOrderMutation,
   AdjustOrderLineMutation,
   RemoveOrderLineMutation,
 } from "~/gql/graphql";
 import { useQuery, useMutation } from "~/gql/api";
+
+export const activeCustomerQuery = gql`
+  query ActiveCustomer {
+    activeCustomer {
+      title
+      firstName
+      lastName
+      phoneNumber
+      emailAddress
+      addresses {
+        fullName
+        streetLine1
+        streetLine2
+        city
+        province
+        postalCode
+        defaultShippingAddress
+        defaultBillingAddress
+      }
+      user {
+        verified
+        lastLogin
+      }
+    }
+  }
+`;
 
 export const activeOrderQuery = gql`
   query ActiveOrder {
@@ -99,20 +126,24 @@ export const addItemToOrderMutation = gql`
 
 interface ShopContext {
   order?: ActiveOrderQuery["activeOrder"];
+  customer?: ActiveCustomerQuery["activeCustomer"];
   fetchCounter: number;
 }
 
-export const ShopContext = createContext<ShopContext>("shop-context");
+export const ShopContext = createContextId<ShopContext>("shop-context");
 
 export const ShopProvider = component$(() => {
-  const exec$ = useQuery<ActiveOrderQuery>(activeOrderQuery);
+  const getOrder$ = useQuery<ActiveOrderQuery>(activeOrderQuery);
+  const getCustomer$ = useQuery<ActiveCustomerQuery>(activeCustomerQuery);
   const state = useStore<ShopContext>({ fetchCounter: 0 });
   useContextProvider(ShopContext, state);
 
   useTask$(async ({ track }) => {
     track(() => state.fetchCounter);
-    const result = await exec$();
-    state.order = result.activeOrder;
+    const orderResult = await getOrder$();
+    const customerResult = await getCustomer$();
+    state.order = orderResult.activeOrder;
+    state.customer = customerResult.activeCustomer;
   });
 
   return (

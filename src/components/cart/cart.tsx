@@ -1,5 +1,6 @@
 import { component$, useContext, useStyles$ } from "@builder.io/qwik";
 import { ShopContext } from "~/components/shop-context/context";
+import { formatPrice } from "~/utils/format";
 import styles from "./cart.css?inline";
 import CartItem from "./cart-item";
 
@@ -33,7 +34,11 @@ export default component$(() => {
             {shopState.order?.lines.map((line) => (
               <CartItem key={line.id} line={line} />
             ))}
-            <div class="cart-actions">
+            <div class="cart-summary">
+              <div class="subtotal">
+                <p>Subtotal</p>
+                <p>{formatPrice(shopState.order.subTotalWithTax)}</p>
+              </div>
               <a href="/checkout" class="cta">Checkout</a>
             </div>
           </div>
