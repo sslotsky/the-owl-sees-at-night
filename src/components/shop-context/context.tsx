@@ -64,6 +64,11 @@ export const activeOrderQuery = gql`
       shippingWithTax
       totalWithTax
       totalQuantity
+      customer {
+        firstName
+        lastName
+        emailAddress
+      }
       lines {
         id
         previewUrl

@@ -1,4 +1,4 @@
-import { component$, useContext, useStyles$, $, QwikFocusEvent } from "@builder.io/qwik";
+import { component$, useContext, useStyles$, $, QwikFocusEvent, useStore } from "@builder.io/qwik";
 import { RequestHandler } from "@builder.io/qwik-city";
 import { ShopContext, setCustomerDetails, activeOrderQuery } from "~/components/shop-context/context";
 import { request as gqlRequest } from "~/gql/api";
@@ -17,6 +17,12 @@ export const onGet: RequestHandler = async ({ response }) => {
 export default component$(() => {
   useStyles$(styles);
   const ctx = useContext(ShopContext);
+  const userDetails = useStore({
+    firstName: ctx.order?.customer?.firstName || '',
+    lastName: ctx.order?.customer?.lastName || '',
+    emailAddress: ctx.order?.customer?.emailAddress || ''
+  })
+  
   const { execute$ } = setCustomerDetails();
   const updateDetails$ = $((e: QwikFocusEvent) => {
     const form = e.target.closest('form');
@@ -24,14 +30,17 @@ export default component$(() => {
       return;
     }
 
-    const formData = new FormData(form);
     if (form.action.endsWith('setCustomerDetails')) {
       execute$(
-        formData.get('firstName') as string,
-        formData.get('lastName') as string,
-        formData.get('email') as string
+        userDetails.firstName,
+        userDetails.lastName,
+        userDetails.emailAddress,
       )
     }
+  });
+
+  const updateUser = (field: keyof typeof userDetails) => $((_evt: Event, el: HTMLInputElement) => {
+    userDetails[field] = el.value;
   });
 
   return (
@@ -46,17 +55,17 @@ export default component$(() => {
               <div>
                 <label>
                   Email address
-                  <input onBlur$={updateDetails$} type="email" name="email" required />
+                  <input onBlur$={updateDetails$} type="email" name="email" value={userDetails.emailAddress} onInput$={updateUser('emailAddress')} required />
                 </label>
               </div>
               <div class="two-column-grid one-letter-gap">
                 <label>
                   First name
-                  <input onBlur$={updateDetails$} type="text" name="firstName" required />
+                  <input onBlur$={updateDetails$} type="text" name="firstName" value={userDetails.firstName} onInput$={updateUser("firstName")} required />
                 </label>
                 <label>
                   Last name
-                  <input onBlur$={updateDetails$} type="text" name="lastName" required />
+                  <input onBlur$={updateDetails$} type="text" name="lastName" value={userDetails.lastName} onInput$={updateUser("lastName")} required />
                 </label>
               </div>
             </form>
