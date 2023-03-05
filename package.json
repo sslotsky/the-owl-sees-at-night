@@ -58,6 +58,7 @@
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
     "imagekit": "^4.1.1",
+    "usa-states": "^0.0.6",
     "zod": "^3.19.1"
   }
 }

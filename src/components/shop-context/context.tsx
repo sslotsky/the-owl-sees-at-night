@@ -16,8 +16,18 @@ import {
   AdjustOrderLineMutation,
   RemoveOrderLineMutation,
   SetCustomerDetailsMutation,
+  SetOrderShippingAddressMutation,
+  CreateAddressInput,
 } from "~/gql/graphql";
 import { useQuery, useMutation } from "~/gql/api";
+
+export const setShippingAddressMutation = gql`
+  mutation SetOrderShippingAddress($input: CreateAddressInput!) {
+    setOrderShippingAddress(input: $input) {
+      __typename
+    }
+  }
+`;
 
 export const setCustomerDetailsMutation = gql`
   mutation SetCustomerDetails($input: CreateCustomerInput!) {
@@ -68,6 +78,14 @@ export const activeOrderQuery = gql`
         firstName
         lastName
         emailAddress
+      }
+      shippingAddress {
+        fullName
+        streetLine1
+        streetLine2
+        city
+        province
+        postalCode
       }
       lines {
         id
@@ -229,6 +247,21 @@ export function setCustomerDetails() {
 
   const execute$ = $(async (firstName: string, lastName: string, emailAddress: string) => {
     await exec$({ input: { firstName, lastName, emailAddress } });
+
+    context.fetchCounter++;
+    return result;
+  });
+
+  return { execute$, result }
+}
+
+export function setShippingAddress() {
+  const { exec$, result } = useMutation<SetOrderShippingAddressMutation>(setShippingAddressMutation);
+
+  const context = useContext(ShopContext);
+
+  const execute$ = $(async (input: CreateAddressInput) => {
+    await exec$({ input });
 
     context.fetchCounter++;
     return result;
