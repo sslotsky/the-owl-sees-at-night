@@ -1,10 +1,13 @@
 import { component$, useContext, useStyles$, $, QwikFocusEvent, useStore } from "@builder.io/qwik";
 import { RequestHandler } from "@builder.io/qwik-city";
 import { UsaStates } from "usa-states";
+import CartItem from "~/components/cart/cart-item";
+import { formatPrice } from "~/utils/format";
 import { ShopContext, setCustomerDetails, activeOrderQuery, setShippingAddress } from "~/components/shop-context/context";
 import { request as gqlRequest } from "~/gql/api";
 import { ActiveOrderQuery } from "~/gql/graphql";
 import styles from "./checkout.css?inline";
+import cartStyles from '~/components/cart/cart.css?inline';
 
 export const onGet: RequestHandler = async ({ response }) => {
   const { data } = await gqlRequest<ActiveOrderQuery>(activeOrderQuery);
@@ -17,6 +20,7 @@ export const onGet: RequestHandler = async ({ response }) => {
 
 export default component$(() => {
   useStyles$(styles);
+  useStyles$(cartStyles);
   const usStates = new UsaStates();
   const ctx = useContext(ShopContext);
   const userDetails = useStore({
@@ -124,7 +128,18 @@ export default component$(() => {
           <h2>Delivery Method</h2>
         </div>
       </div>
-      <div></div>
+      <div>
+        <h2>Order Summary</h2>
+          {ctx.order?.lines.map((line) => (
+            <CartItem key={line.id} line={line} />
+          ))}
+          <div class="cart-summary">
+            <div class="subtotal">
+              <p>Subtotal</p>
+              <p>{ctx.order && formatPrice(ctx.order.subTotalWithTax)}</p>
+            </div>
+          </div>
+      </div>
     </div>
   );
 });
