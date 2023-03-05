@@ -46,11 +46,7 @@ export default component$(() => {
     }
 
     if (form.action.endsWith('setCustomerDetails')) {
-      setCustomerDetails$(
-        userDetails.firstName,
-        userDetails.lastName,
-        userDetails.emailAddress,
-      )
+      setCustomerDetails$(userDetails);
     } else if (form.action.endsWith('setShippingDetails')) {
       setShippingAddress$(shippingDetails);
     }

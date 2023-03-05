@@ -18,6 +18,7 @@ import {
   SetCustomerDetailsMutation,
   SetOrderShippingAddressMutation,
   CreateAddressInput,
+  CreateCustomerInput,
 } from "~/gql/graphql";
 import { useQuery, useMutation } from "~/gql/api";
 
@@ -166,16 +167,13 @@ export const ShopContext = createContextId<ShopContext>("shop-context");
 
 export const ShopProvider = component$(() => {
   const getOrder$ = useQuery<ActiveOrderQuery>(activeOrderQuery);
-  const getCustomer$ = useQuery<ActiveCustomerQuery>(activeCustomerQuery);
   const state = useStore<ShopContext>({ fetchCounter: 0 });
   useContextProvider(ShopContext, state);
 
   useTask$(async ({ track }) => {
     track(() => state.fetchCounter);
     const orderResult = await getOrder$();
-    const customerResult = await getCustomer$();
     state.order = orderResult.activeOrder;
-    state.customer = customerResult.activeCustomer;
   });
 
   return (
@@ -245,8 +243,8 @@ export function setCustomerDetails() {
   const { exec$, result } = useMutation<SetCustomerDetailsMutation>(setCustomerDetailsMutation);
   const context = useContext(ShopContext);
 
-  const execute$ = $(async (firstName: string, lastName: string, emailAddress: string) => {
-    await exec$({ input: { firstName, lastName, emailAddress } });
+  const execute$ = $(async (input: CreateCustomerInput) => {
+    await exec$({ input });
 
     context.fetchCounter++;
     return result;
