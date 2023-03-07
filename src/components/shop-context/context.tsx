@@ -19,8 +19,22 @@ import {
   SetOrderShippingAddressMutation,
   CreateAddressInput,
   CreateCustomerInput,
+  EligibleShippingMethodsQuery,
 } from "~/gql/graphql";
 import { useQuery, useMutation } from "~/gql/api";
+
+export const shippingMethodsQuery = gql`
+  query EligibleShippingMethods {
+    eligibleShippingMethods {
+      id
+      price
+      priceWithTax
+      code
+      name
+      description
+    }
+  }
+`;
 
 export const setShippingAddressMutation = gql`
   mutation SetOrderShippingAddress($input: CreateAddressInput!) {
@@ -266,4 +280,12 @@ export function setShippingAddress() {
   });
 
   return { execute$, result }
+}
+
+export function shippingMethods() {
+  const exec$ = useQuery<EligibleShippingMethodsQuery>(shippingMethodsQuery);
+
+  return $(async () => {
+    return exec$();
+  });
 }

@@ -25,3 +25,30 @@ main {
   margin-right: auto;
   max-width: 1280px;
 }
+
+.checkout-crumbs[data-active] {
+  color: var(--main-brand);
+}
+
+.delivery-methods .card {
+  cursor: pointer;
+  display: flex;
+}
+
+.delivery-methods .card.active {
+  border: 2px solid var(--main-brand);
+}
+
+.selected {
+  display: none;
+}
+
+.card.active .selected {
+  display: unset;
+  background-color: var(--main-brand);
+  color: var(--light-shades);
+  height: min-content;
+  border-radius: 50%;
+  line-height: 1rem;
+  padding: 0.125rem;
+}

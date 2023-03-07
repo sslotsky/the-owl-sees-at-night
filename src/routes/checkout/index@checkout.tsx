@@ -1,11 +1,11 @@
-import { component$, useContext, useStyles$, $, QwikFocusEvent, useStore } from "@builder.io/qwik";
+import { component$, useContext, useStyles$, $, QwikFocusEvent, useStore, useSignal, useResource$, Resource } from "@builder.io/qwik";
 import { RequestHandler } from "@builder.io/qwik-city";
 import { UsaStates } from "usa-states";
 import CartItem from "~/components/cart/cart-item";
 import { formatPrice } from "~/utils/format";
-import { ShopContext, setCustomerDetails, activeOrderQuery, setShippingAddress } from "~/components/shop-context/context";
+import { ShopContext, setCustomerDetails, activeOrderQuery, setShippingAddress, shippingMethods } from "~/components/shop-context/context";
 import { request as gqlRequest } from "~/gql/api";
-import { ActiveOrderQuery } from "~/gql/graphql";
+import { ActiveOrderQuery, EligibleShippingMethodsQuery } from "~/gql/graphql";
 import styles from "./checkout.css?inline";
 import cartStyles from '~/components/cart/cart.css?inline';
 
@@ -40,6 +40,8 @@ export default component$(() => {
     postalCode: ctx.order?.shippingAddress?.postalCode || '',
     countryCode: 'USA',
   });
+
+  const shippingMethod = useSignal<string>();
   
   const { execute$: setCustomerDetails$ } = setCustomerDetails();
   const { execute$: setShippingAddress$ } = setShippingAddress();
@@ -63,6 +65,11 @@ export default component$(() => {
   const updateShippingAddress = (field: keyof typeof shippingDetails) => $((_evt: Event, el: HTMLInputElement) => {
     shippingDetails[field] = el.value;
   });
+
+  const getShippingMethods$ = shippingMethods();
+  const shippingMethodsResource = useResource$(async () => {
+    return getShippingMethods$();
+  })
 
   return (
     <div class="two-column-grid two-letter-gap">
@@ -124,8 +131,40 @@ export default component$(() => {
             </div>
           </form>
         </div>
-        <div>
+        <div class="delivery-methods">
           <h2>Delivery Method</h2>
+          <Resource
+            value={shippingMethodsResource}
+            onResolved={(data: EligibleShippingMethodsQuery) => (
+              <div class="three-column-grid one-letter-gap">
+                {
+                  data.eligibleShippingMethods.map((method) => {
+                    const classes = ['card'];
+                    if (method.code === shippingMethod.value) {
+                      classes.push('active');
+                    }
+
+                    return (
+                      <div
+                        class={classes.join(' ')}
+                        onClick$={() => {
+                          shippingMethod.value = method.code;
+                        }}
+                      >
+                        <div class="flex-columns full-width">
+                          <span class={shippingMethod.value}>{method.name}</span>
+                          <span>{formatPrice(method.priceWithTax)}</span>
+                        </div>
+                        <div class="selected">
+                          &#10003;
+                        </div>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            )}
+          />
         </div>
       </div>
       <div>

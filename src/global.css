@@ -193,3 +193,19 @@ input[type=text], input[type=email], select {
   border: 1px solid var(--dark-accent);
   border-radius: 5px;
 }
+
+.card {
+  padding: 0.75rem;
+  background-color: var(--light-shades);
+  border: 1px solid var(--dark-accent);
+  border-radius: 5px;
+}
+
+.flex-columns {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  width: 100%;
+}
