@@ -1,5 +1,6 @@
 import { component$, Slot, useStyles$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
+import Flash from "~/components/flash";
 import styles from "./checkout.css?inline";
 
 export default component$(() => {
@@ -7,6 +8,7 @@ export default component$(() => {
   const location = useLocation();
   return (
     <>
+      <Flash />
       <main>
         <nav>
           <ol>

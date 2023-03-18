@@ -52,3 +52,14 @@ main {
   line-height: 1rem;
   padding: 0.125rem;
 }
+
+button.checkout {
+  display: flex;
+  justify-content: center;
+}
+
+button.checkout svg {
+  width: 1rem;
+  align-self: center;
+  margin-right: 0.5rem;
+}

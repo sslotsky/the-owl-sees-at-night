@@ -38,6 +38,10 @@ body {
   margin: 0;
 }
 
+button {
+  font-family: "Hind Siliguri", sans-serif;
+}
+
 a {
   text-decoration: none;
 }
@@ -164,7 +168,7 @@ input[type="range"]:focus::-moz-range-thumb {
   text-align: center;
 }
 
-.cta:hover {
+.cta:hover:not(:disabled) {
   filter: brightness(1.25);
 }
 
@@ -208,4 +212,13 @@ input[type=text], input[type=email], select {
 
 .full-width {
   width: 100%;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
 }

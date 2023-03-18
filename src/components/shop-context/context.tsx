@@ -20,8 +20,17 @@ import {
   CreateAddressInput,
   CreateCustomerInput,
   EligibleShippingMethodsQuery,
+  SetOrderShippingMethodMutation,
 } from "~/gql/graphql";
 import { useQuery, useMutation } from "~/gql/api";
+
+export const setShippingMethodMutation = gql`
+  mutation SetOrderShippingMethod($shippingMethodId: ID!) {
+    setOrderShippingMethod(shippingMethodId: $shippingMethodId) {
+      __typename
+    }
+  }
+`;
 
 export const shippingMethodsQuery = gql`
   query EligibleShippingMethods {
@@ -122,6 +131,13 @@ export const activeOrderQuery = gql`
         }
         linePriceWithTax
       }
+      shippingLines {
+        shippingMethod {
+          id
+          code
+          name
+        }
+      }
     }
   }
 `;
@@ -175,13 +191,17 @@ interface ShopContext {
   order?: ActiveOrderQuery["activeOrder"];
   customer?: ActiveCustomerQuery["activeCustomer"];
   fetchCounter: number;
+  flash: {
+    error?: string;
+    success?: string;
+  }
 }
 
 export const ShopContext = createContextId<ShopContext>("shop-context");
 
 export const ShopProvider = component$(() => {
   const getOrder$ = useQuery<ActiveOrderQuery>(activeOrderQuery);
-  const state = useStore<ShopContext>({ fetchCounter: 0 });
+  const state = useStore<ShopContext>({ fetchCounter: 0, flash: {} }, { deep: true });
   useContextProvider(ShopContext, state);
 
   useTask$(async ({ track }) => {
@@ -189,6 +209,23 @@ export const ShopProvider = component$(() => {
     const orderResult = await getOrder$();
     state.order = orderResult.activeOrder;
   });
+
+  useTask$(async ({ track }) => {
+    track(() => state.flash.error);
+    track(() => state.flash.success);
+
+    if (state.flash.error) {
+      setTimeout(() => {
+        state.flash.error = undefined;
+      }, 10000);
+    }
+
+    if (state.flash.success) {
+      setTimeout(() => {
+        state.flash.success = undefined;
+      }, 10000);
+    }
+  })
 
   return (
     <>
@@ -280,6 +317,21 @@ export function setShippingAddress() {
   });
 
   return { execute$, result }
+}
+
+export function setShippingMethod() {
+  const { exec$, result } = useMutation<SetOrderShippingMethodMutation>(setShippingMethodMutation);
+
+  const context = useContext(ShopContext);
+
+  const execute$ = $(async (shippingMethodId: string) => {
+    await exec$({ shippingMethodId });
+
+    context.fetchCounter++;
+    return result;
+  });
+
+  return { execute$, result };
 }
 
 export function shippingMethods() {

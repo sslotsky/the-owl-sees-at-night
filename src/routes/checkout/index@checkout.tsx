@@ -3,11 +3,13 @@ import { RequestHandler } from "@builder.io/qwik-city";
 import { UsaStates } from "usa-states";
 import CartItem from "~/components/cart/cart-item";
 import { formatPrice } from "~/utils/format";
-import { ShopContext, setCustomerDetails, activeOrderQuery, setShippingAddress, shippingMethods } from "~/components/shop-context/context";
+import { ShopContext, setCustomerDetails, activeOrderQuery, setShippingAddress, shippingMethods, setShippingMethod } from "~/components/shop-context/context";
 import { request as gqlRequest } from "~/gql/api";
 import { ActiveOrderQuery, EligibleShippingMethodsQuery } from "~/gql/graphql";
 import styles from "./checkout.css?inline";
 import cartStyles from '~/components/cart/cart.css?inline';
+
+export const UNEXPECTED_ERROR = "An unexpected error occured, please try again!";
 
 export const onGet: RequestHandler = async ({ response }) => {
   const { data } = await gqlRequest<ActiveOrderQuery>(activeOrderQuery);
@@ -41,10 +43,19 @@ export default component$(() => {
     countryCode: 'USA',
   });
 
-  const shippingMethod = useSignal<string>();
+  const shippingMethod = useSignal(
+    ctx.order?.shippingLines[0]?.shippingMethod.code
+  );
+
+  const [contactForm, shippingForm] = [useSignal<HTMLFormElement>(), useSignal<HTMLFormElement>()];
+  const canProceed = Boolean(shippingMethod.value) && [contactForm, shippingForm].every((form) => {
+    return Boolean(form.value?.checkValidity());
+  });
   
   const { execute$: setCustomerDetails$ } = setCustomerDetails();
   const { execute$: setShippingAddress$ } = setShippingAddress();
+  const { execute$: setShippingMethod$ } = setShippingMethod();
+
   const updateDetails$ = $((e: QwikFocusEvent) => {
     const form = e.target.closest('form');
     if (!form?.checkValidity()) {
@@ -52,9 +63,15 @@ export default component$(() => {
     }
 
     if (form.action.endsWith('setCustomerDetails')) {
-      setCustomerDetails$(userDetails);
+      setCustomerDetails$(userDetails).catch(() => {
+        ctx.flash.error = UNEXPECTED_ERROR;
+        form.reset();
+      });
     } else if (form.action.endsWith('setShippingDetails')) {
-      setShippingAddress$(shippingDetails);
+      setShippingAddress$(shippingDetails).catch(() => {
+        ctx.flash.error = UNEXPECTED_ERROR;
+        form.reset();
+      });
     }
   });
 
@@ -79,7 +96,7 @@ export default component$(() => {
           {ctx.customer ? (
             <div></div>
           ) : (
-            <form action="setCustomerDetails">
+            <form action="setCustomerDetails" ref={contactForm}>
               <div>
                 <label>
                   Email address
@@ -101,7 +118,7 @@ export default component$(() => {
         </div>
         <div>
           <h2>Shipping Information</h2>
-          <form action="setShippingDetails">
+          <form action="setShippingDetails" ref={shippingForm}>
             <label>
               Name
               <input onBlur$={updateDetails$} type="text" name="fullName" value={shippingDetails.fullName} onInput$={updateShippingAddress("fullName")} required />
@@ -149,6 +166,10 @@ export default component$(() => {
                         class={classes.join(' ')}
                         onClick$={() => {
                           shippingMethod.value = method.code;
+                          setShippingMethod$(method.id).catch(() => {
+                            ctx.flash.error = UNEXPECTED_ERROR;
+                            shippingMethod.value = undefined;
+                          });
                         }}
                       >
                         <div class="flex-columns full-width">
@@ -165,6 +186,15 @@ export default component$(() => {
               </div>
             )}
           />
+        </div>
+        <div>
+          <button class="checkout cta full-width mt-2" disabled={!canProceed}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd" />
+          </svg>
+
+            Proceed to payment
+          </button>
         </div>
       </div>
       <div>
