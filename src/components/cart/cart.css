@@ -1,0 +1,122 @@
+.cart {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  max-height: 2.5rem;
+  z-index: 2;
+  background-color: var(--light-shades);
+}
+
+.side-panel {
+  width: 0;
+  height: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: 0.5s all ease;
+  background-color: var(--light-shades);
+}
+
+.cart:hover .side-panel {
+  width: 100%;
+  height: 100%;
+  max-height: calc(100vh - 2.5rem);
+  overflow: auto;
+  overflow-x: hidden;
+  padding: 1rem;
+  border-bottom: 2px solid var(--main-brand);
+  border-left: 2px solid var(--main-brand); 
+  box-shadow: 0 1px 3px var(--dark-accent);
+}
+
+.cart .cart-item img {
+  width: 0;
+}
+
+.cart:hover .cart-item img {
+  width: auto;
+}
+
+.shopping-bag > svg {
+  width: 1.5rem;
+  color: var(--dark-shades);
+}
+
+.shopping-bag {
+  display: flex;
+  padding: 0.5rem 1rem;
+  position: relative;
+  width: min-content;
+  background-color: var(--main-brand);
+  box-shadow: 0 1px 3px var(--dark-accent);
+}
+
+.cart-summary {
+  display: flex;
+  flex-direction: column;
+  font-weight: bolder;
+}
+
+.subtotal {
+  display: flex;
+  justify-content: space-between;
+}
+
+span.count {
+  background-color: var(--red);
+  color: var(--light-shades);
+  border-radius: 50%;
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.5rem;
+  padding: 0 0.25rem;
+  height: min-content;
+  position: absolute;
+  left: 60%;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  margin-bottom: 0.5rem;
+}
+
+.product-text {
+  font-size: 0.75rem;
+  margin-left: 0.75rem;
+}
+
+.cart-item-actions {
+  line-height: 2.5rem;
+}
+
+.product-text span {
+  display: block;
+}
+
+.cart-item-action {
+  background-color: transparent;
+  border: none;
+}
+
+.cart-item-action svg {
+  width: 1rem;
+  transition: 0.2s all ease;
+}
+
+.cart-item-action {
+  cursor: pointer;
+}
+
+.warning {
+  color: var(--red);
+}
+
+.cart-item-action:hover {
+  filter: brightness(0.8);
+}
+
+.cart-item-action:hover svg {
+  width: 1.2rem;
+}

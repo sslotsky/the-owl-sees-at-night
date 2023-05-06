@@ -1,0 +1,14 @@
+header {
+  background-color: var(--dark-shades);
+}
+
+header h1 {
+  margin: 0;
+  color: var(--light-shades);
+  padding: 0.25rem 0.75rem;
+  text-align: center;
+}
+
+header a {
+  color: var(--light-shades);
+}

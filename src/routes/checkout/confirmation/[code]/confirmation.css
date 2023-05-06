@@ -1,0 +1,6 @@
+.center-column {
+  display: flex;
+  flex-direction: column;
+  max-width: max-content;
+  margin: auto;
+}
