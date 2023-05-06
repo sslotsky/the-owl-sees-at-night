@@ -200,10 +200,12 @@ export interface MutationStore<T> {
   errors?: { message: string }[];
 }
 
-export function useMutation<T extends (...args: any) => Promise<any>>(
-  fun$: QRL<T>
-) {
-  const result = useStore<MutationStore<Awaited<ReturnType<T>>>>({
+type AnyFunc = (...args: any) => Promise<any>;
+type AsyncReturn<T extends AnyFunc> = Awaited<ReturnType<T>>;
+type SdkStore<T extends AnyFunc> = MutationStore<AsyncReturn<T>>;
+
+export function useMutation<T extends AnyFunc>(fun$: QRL<T>) {
+  const result = useStore<SdkStore<T>>({
     loading: false,
   });
 
