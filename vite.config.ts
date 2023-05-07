@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       codegen({
         config: {
           overwrite: true,
-          schema: `${process.env.PUBLIC_VENDURE_URL}/shop-api`,
+          schema: `${process.env.VITE_VENDURE_URL}/shop-api`,
           documents: ["src/**/*.ts", "!src/generated/*"],
           generates: {
             "src/generated/graphql.ts": {
