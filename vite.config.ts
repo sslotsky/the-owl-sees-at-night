@@ -7,14 +7,13 @@ import mkcert from 'vite-plugin-mkcert';
 
 export default defineConfig(({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
-  console.log(process.env);
 
   return {
     plugins: [mkcert(), qwikCity(), qwikVite(), tsconfigPaths(),
       codegen({
         config: {
           overwrite: true,
-          schema: `${process.env.VITE_VENDURE_URL}/shop-api`,
+          schema: `${process.env.PUBLIC_VENDURE_URL}/shop-api`,
           documents: ["src/**/*.ts", "!src/generated/*"],
           generates: {
             "src/generated/graphql.ts": {

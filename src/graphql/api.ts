@@ -86,7 +86,7 @@ export async function rawGqlFetch<R>(
   variables: Record<string, any>,
   headers: HeadersInit
 ): Promise<[Response<R>, string | null]> {
-  const resp = await fetch(`${import.meta.env.VITE_VENDURE_URL}/shop-api`, {
+  const resp = await fetch(`${import.meta.env.PUBLIC_VENDURE_URL}/shop-api`, {
     method: "POST",
     headers,
     body: JSON.stringify({
@@ -143,7 +143,7 @@ export const serverGqlFetch: typeof rawGqlFetch = server$(async function (
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const resp = await fetch(`${import.meta.env.VITE_VENDURE_URL}/shop-api`, {
+  const resp = await fetch(`${import.meta.env.PUBLIC_VENDURE_URL}/shop-api`, {
     method: "POST",
     headers,
     body: JSON.stringify({

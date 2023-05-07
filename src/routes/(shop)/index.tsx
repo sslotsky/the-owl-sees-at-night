@@ -10,13 +10,16 @@ import type { CustomPrintQuery } from '~/generated/graphql';
 
 export const useProductData = routeLoader$(async (event) => {
   const handler = graphqlRequestHandler(event);
-  const productDataResponse = await handler<CustomPrintQuery>(
+  const productData = await handler<CustomPrintQuery>(
     customPrintQuery,
-    { slug: import.meta.env.VITE_CUSTOM_PRINT_SLUG }
+    { slug: import.meta.env.PUBLIC_CUSTOM_PRINT_SLUG }
   );
 
-  const productData = productDataResponse;
-  const files = await getPhotos();
+  const files = await getPhotos({
+    imageKitId: event.env.get('IMAGE_KIT_ID') ?? '',
+    privateKey: event.env.get('IMAGE_KIT_PRIVATE_KEY') ?? '',
+    publicKey: event.env.get('IMAGE_KIT_PUBLIC_KEY') ?? ''
+  });
 
   return { productData, files }
 });

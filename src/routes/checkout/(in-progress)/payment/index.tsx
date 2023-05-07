@@ -5,7 +5,6 @@ import { graphqlRequestHandler } from "~/graphql/api";
 import { loadStripe } from '@stripe/stripe-js';
 import { createPaymentIntent } from "~/components/shop-context/queries";
 import type { ActiveOrderQuery, CreatePaymentAttemptMutation } from "~/generated/graphql";
-import { env } from "~/image-kit";
 
 export const usePaymentIntent = routeLoader$(async (event) => {
   const handler = graphqlRequestHandler(event);
@@ -36,7 +35,7 @@ export default component$(() => {
   const submitting = useSignal(false);
 
   useVisibleTask$(async () => {
-    const stripe = await loadStripe(env.VITE_STRIPE_PUBLISHABLE_KEY, { apiVersion: "2022-11-15" });
+    const stripe = await loadStripe(import.meta.env.PUBLIC_STRIPE_KEY, { apiVersion: "2022-11-15" });
     if (!stripe) {
       return;
     }

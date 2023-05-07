@@ -1,16 +1,6 @@
 import ImageKit from "imagekit";
 import type { FileObject } from "imagekit/dist/libs/interfaces";
 
-// HACK
-export const env = {
-  ...import.meta.env,
-  ...process.env,
-};
-
-const imageKitId = env.VITE_IMAGE_KIT_ID;
-const publicKey = env.VITE_IMAGE_KIT_PUBLIC_KEY;
-const privateKey = env.VITE_IMAGE_KIT_PRIVATE_KEY;
-
 export interface MasonryPhoto extends FileObject {
   originalUrl: string;
   masonryUrl: string;
@@ -57,7 +47,17 @@ function mapFile(imageKit: ImageKit) {
   };
 }
 
-export async function getPhotos() {
+export interface ImageKitCreds {
+  publicKey: string;
+  privateKey: string;
+  imageKitId: string;
+}
+
+export async function getPhotos({
+  publicKey,
+  privateKey,
+  imageKitId,
+}: ImageKitCreds) {
   const imageKit = new ImageKit({
     publicKey,
     privateKey,
