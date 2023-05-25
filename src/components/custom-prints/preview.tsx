@@ -7,6 +7,7 @@ import {
 } from "@builder.io/qwik";
 import type { MasonryPhoto } from "~/image-kit";
 import type { Variant } from "./types";
+import { divide } from "~/utils/math";
 
 export interface Props {
   store: {
@@ -51,8 +52,8 @@ export default component$((props: Props) => {
               return;
             }
 
-            const maxX = image.naturalWidth / props.store.printSizeX;
-            const maxY = image.naturalHeight / props.store.printSizeY;
+            const maxX = divide(image.naturalWidth, props.store.printSizeX);
+            const maxY = divide(image.naturalHeight, props.store.printSizeY);
             const scale = Math.min(maxX, maxY);
             const [width, height] = [
               props.store.printSizeX * scale,
@@ -84,7 +85,7 @@ export default component$((props: Props) => {
               return;
             }
 
-            const scale = img.naturalWidth / img.clientWidth;
+            const scale = divide(img.naturalWidth, img.clientWidth);
             ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
             ctx.drawImage(
               img,

@@ -12,7 +12,12 @@ import type { GetOrderByCodeQuery } from "~/generated/graphql";
 export const useOrder = routeLoader$(async (event) => {
   const code = event.params.code;
   const handler = graphqlRequestHandler(event);
-  return handler<GetOrderByCodeQuery>(orderByCodeQuery, { code });
+  const result =  await handler<GetOrderByCodeQuery>(orderByCodeQuery, { code });
+  if (result.kind === 'error') {
+    return { orderByCode: undefined };
+  }
+
+  return result.data;
 });
 
 export default component$(() => {

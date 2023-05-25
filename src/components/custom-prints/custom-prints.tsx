@@ -4,6 +4,7 @@ import {
   useStore,
   useSignal,
   useTask$,
+  $,
 } from "@builder.io/qwik";
 import type { MasonryPhoto } from "~/image-kit";
 import Image from "./image";
@@ -140,26 +141,7 @@ export default component$(
 
     const window = useSignal<HTMLImageElement>();
 
-    const xScale = divide(store.file.width, (image.value?.clientWidth || 1));
-    const yScale = divide(store.file.height, (image.value?.clientHeight || 1));
-    const scale = Math.min(xScale, yScale);
-
-    const [left, top, width, height] = [
-      store.cropperLeft,
-      store.cropperTop,
-      store.cropperWidth,
-      store.cropperHeight,
-    ].map((n) => n * scale);
-
-    const transform = `tr:w-${width},h-${height},cm-extract,x-${left},y-${top}`;
-
-
-    const { execute$, result } = useAddToOrder(
-      store.variant.id,
-      1,
-      store.file.fileId,
-      transform
-    );
+    const { execute$, result } = useAddToOrder();
 
     return (
       <div class="custom-prints">
@@ -301,7 +283,22 @@ export default component$(
                   class="iconic"
                   disabled={store.gridView || result.loading}
                   // hack because qwik has a bug
-                  onClick$={(store.gridView || result.loading) ? undefined : execute$}
+                  onClick$={(store.gridView || result.loading) ? undefined : $(() => {
+                    const xScale = divide(store.file.width, (image.value?.clientWidth || 1));
+                    const yScale = divide(store.file.height, (image.value?.clientHeight || 1));
+                    const scale = Math.min(xScale, yScale);
+
+                    const [left, top, width, height] = [
+                      store.cropperLeft,
+                      store.cropperTop,
+                      store.cropperWidth,
+                      store.cropperHeight,
+                    ].map((n) => n * scale);
+
+                    const transform = `tr:w-${width},h-${height},cm-extract,x-${left},y-${top}`;
+
+                    execute$({ productVariantId: store.variant.id, fileId: store.file.fileId, quantity: 1, transformation: transform });
+                  })}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

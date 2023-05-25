@@ -67,23 +67,18 @@ export const ShopProvider = component$((props: ProviderProps) => {
   );
 });
 
-export function useAddToOrder(
-  productVariantId: string,
-  quantity: number,
-  fileId: string,
-  transformation: string
-) {
+export function useAddToOrder() {
   const context = useContext(ShopContext);
 
   const { exec$, result } = useMutation($(sdk.AddToOrder));
   
-  const execute$ = $(async () => {
-    await exec$({
-      productVariantId,
-      quantity,
-      fileId,
-      transformation,
-    });
+  const execute$ = $(async (args: {
+    productVariantId: string;
+    quantity: number;
+    fileId: string;
+    transformation: string;
+  }) => {
+    await exec$(args);
 
     context.fetchCounter++;
     return result;

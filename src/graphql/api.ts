@@ -7,7 +7,6 @@ import { parse, serialize } from "cookie";
 import type { DocumentNode } from "graphql";
 import { print } from "graphql";
 import { getSdk } from "~/generated/graphql";
-// import { parse } from "cookie";
 
 export const AUTH_TOKEN_KEY = "vendure-auth-token";
 
@@ -121,11 +120,8 @@ export function graphqlRequestHandler(
     }
 
     const gqlResp = await getGqlResponse<T>(resp);
-    if (gqlResp.kind === "error") {
-      throw gqlResp.errors;
-    }
 
-    return gqlResp.data;
+    return gqlResp;
   };
 }
 

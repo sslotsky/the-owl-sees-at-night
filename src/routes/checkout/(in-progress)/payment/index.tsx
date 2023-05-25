@@ -11,17 +11,21 @@ export const usePaymentIntent = routeLoader$(async (event) => {
 
   const result = await handler<ActiveOrderQuery>(activeOrderQuery, {});
   
-  if (!result.activeOrder) {
+  if (result.kind === 'error' || !result.data.activeOrder) {
     throw event.error(500, "Failed to retrieve active order");
   }
 
-  if (result.activeOrder.state !== 'ArrangingPayment') {
+  if (result.data.activeOrder.state !== 'ArrangingPayment') {
     throw event.redirect(302, '/checkout');
   }
 
   const paymentIntentResult = await handler<CreatePaymentAttemptMutation>(createPaymentIntent, {});
 
-  return paymentIntentResult.createStripePaymentIntent ?? "";
+  if (paymentIntentResult.kind === 'error') {
+    throw new Error('Error creating payment intent');
+  }
+
+  return paymentIntentResult.data.createStripePaymentIntent ?? "";
 });
 
 export default component$(() => {

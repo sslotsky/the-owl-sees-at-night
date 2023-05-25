@@ -16,11 +16,15 @@ export const onGet: RequestHandler = async (event) => {
   const handler = graphqlRequestHandler(event);
   const result = await handler<ActiveOrderQuery>(activeOrderQuery, {});
   
-  if (!result.activeOrder) {
+  if (result.kind === 'error') {
+    throw new Error('Error fetching active order');
+  }
+
+  if (!result.data.activeOrder) {
     throw event.redirect(302, '/');
   }
 
-  if (result.activeOrder.state === 'ArrangingPayment') {
+  if (result.data.activeOrder.state === 'ArrangingPayment') {
     await handler<SetOrderStatusMutation>(setOrderStatus, { status: 'AddingItems' });
   }
 
