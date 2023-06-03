@@ -62,6 +62,7 @@ export default component$((props: Props) => {
             const sx = (image.naturalWidth - width) / 2;
             const sy = (image.naturalHeight - height) / 2;
 
+            ctx.globalAlpha = 0.8;
             ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
             ctx.drawImage(
               image,
@@ -85,6 +86,7 @@ export default component$((props: Props) => {
               return;
             }
 
+            ctx.globalAlpha = 0.8;
             const scale = divide(img.naturalWidth, img.clientWidth);
             ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
             ctx.drawImage(

@@ -121,15 +121,15 @@
 }
 
 .wood {
-  border: 5px inset var(--woody);
+  background: center / cover no-repeat url("wood-veneer.jpg");
 }
 
 .metal {
-  border: 5px inset var(--light-accent);
+  background: center / cover no-repeat url("zinc.jpg");
 }
 
 .canvas {
-  border: 5px inset var(--light-shades);
+  background: center / cover no-repeat url("canvas.jpg");
 }
 
 .print-size:hover {
@@ -137,7 +137,7 @@
 }
 
 .print-size.active {
-  filter: brightness(1.5);
+  filter: brightness(1.3);
 }
 
 .preview-area {
@@ -197,6 +197,10 @@
 
 .preview-container {
   position: relative;
+}
+
+.preview-container canvas {
+  border: 5px inset var(--dark-accent);
 }
 
 .preview {
