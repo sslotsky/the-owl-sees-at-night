@@ -215,7 +215,7 @@ export default component$(
                   </button>
                   <button
                     onClick$={() => {
-                      const index = props.files.indexOf(store.file) - 1;
+                      const index = props.files.findIndex((file => store.file.fileId === file.fileId)) - 1;
                       store.file = props.files.at(index % props.files.length)!;
                     }}
                     class="iconic inverted"
@@ -238,7 +238,7 @@ export default component$(
                   <button
                     class="iconic inverted"
                     onClick$={() => {
-                      const index = props.files.indexOf(store.file) + 1;
+                      const index = props.files.findIndex((file => store.file.fileId === file.fileId)) + 1;
                       store.file = props.files.at(index % props.files.length)!;
                     }}
                   >
