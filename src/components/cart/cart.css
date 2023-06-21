@@ -120,3 +120,7 @@ span.count {
 .cart-item-action:hover svg {
   width: 1.2rem;
 }
+
+.cart-item > img {
+  max-width: 200px;
+}
