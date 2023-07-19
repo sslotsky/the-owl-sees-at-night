@@ -2,3 +2,16 @@ form label {
   display: flex;
   flex-direction: column;
 }
+
+.checkout-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-gap: 2rem;
+}
+
+@media (max-width: 1200px) {
+  .checkout-container {
+    grid-template-columns: unset;
+    margin-right: 0.25rem;
+  }
+}

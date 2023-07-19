@@ -12,7 +12,7 @@ export default component$(() => {
 
   return (
     <>
-      <div class="two-column-grid two-letter-gap">
+      <div class="checkout-container">
         <div>
           <Slot />
         </div>
