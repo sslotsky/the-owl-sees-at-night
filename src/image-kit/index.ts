@@ -67,6 +67,7 @@ export async function getPhotos({
   const files = await imageKit.listFiles({
     limit: 100,
     sort: "DESC_UPDATED",
+    path: "Trip_to_Schroeder_and_Grand_Marais",
   });
 
   return files.map(mapFile(imageKit));
